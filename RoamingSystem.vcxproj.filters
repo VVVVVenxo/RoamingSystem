@@ -63,6 +63,12 @@
     <ClCompile Include="src\RoamingApp.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Terrain\HeightmapLoader.cpp">
+      <Filter>src\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Terrain\Terrain.cpp">
+      <Filter>src\Terrain</Filter>
+    </ClCompile>
     <ClCompile Include="imgui\imgui.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
@@ -131,12 +137,24 @@
     <ClInclude Include="src\RoamingApp.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Terrain\HeightmapLoader.h">
+      <Filter>src\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Terrain\Terrain.h">
+      <Filter>src\Terrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\test.frag">
       <Filter>资源文件\shaders</Filter>
     </None>
     <None Include="shaders\test.vert">
+      <Filter>资源文件\shaders</Filter>
+    </None>
+    <None Include="shaders\terrain.vert">
+      <Filter>资源文件\shaders</Filter>
+    </None>
+    <None Include="shaders\terrain.frag">
       <Filter>资源文件\shaders</Filter>
     </None>
   </ItemGroup>
