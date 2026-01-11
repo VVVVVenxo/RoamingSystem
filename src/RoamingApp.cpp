@@ -26,7 +26,7 @@ void RoamingApp::onInit()
 
     // Generate terrain from heightmap
     // Try to load heightmap, if not found, create a simple test terrain
-    if (!m_terrain.generate("assets/heightmaps/terrain_512.png", m_terrainSize, m_terrainMaxHeight))
+    if (!m_terrain.generate("assets/heightmaps/heightmap.png", m_terrainSize, m_terrainMaxHeight))
     {
         std::cout << "Heightmap not found, trying smaller test heightmap..." << std::endl;
         if (!m_terrain.generate("assets/heightmaps/test.png", m_terrainSize, m_terrainMaxHeight))
