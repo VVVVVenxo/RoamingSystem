@@ -75,6 +75,12 @@
     <ClCompile Include="src\Terrain\Terrain.cpp">
       <Filter>src\Terrain</Filter>
     </ClCompile>
+    <ClCompile Include="src\Water\Water.cpp">
+      <Filter>src\Water</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Water\WaterFramebuffers.cpp">
+      <Filter>src\Water</Filter>
+    </ClCompile>
     <ClCompile Include="imgui\imgui.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
@@ -155,6 +161,12 @@
     <ClInclude Include="src\Terrain\Terrain.h">
       <Filter>src\Terrain</Filter>
     </ClInclude>
+    <ClInclude Include="src\Water\Water.h">
+      <Filter>src\Water</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Water\WaterFramebuffers.h">
+      <Filter>src\Water</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\test.frag">
@@ -173,6 +185,12 @@
       <Filter>资源文件\shaders</Filter>
     </None>
     <None Include="shaders\skybox.frag">
+      <Filter>资源文件\shaders</Filter>
+    </None>
+    <None Include="shaders\water.vert">
+      <Filter>资源文件\shaders</Filter>
+    </None>
+    <None Include="shaders\water.frag">
       <Filter>资源文件\shaders</Filter>
     </None>
   </ItemGroup>

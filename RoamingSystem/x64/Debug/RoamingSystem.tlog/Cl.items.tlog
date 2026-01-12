@@ -16,4 +16,6 @@ E:\RoamingSystem\RoamingSystem\src\Application.cpp;E:\RoamingSystem\RoamingSyste
 E:\RoamingSystem\RoamingSystem\src\RoamingApp.cpp;E:\RoamingSystem\RoamingSystem\RoamingSystem\x64\Debug\RoamingApp.obj
 E:\RoamingSystem\RoamingSystem\src\Terrain\HeightmapLoader.cpp;E:\RoamingSystem\RoamingSystem\RoamingSystem\x64\Debug\HeightmapLoader.obj
 E:\RoamingSystem\RoamingSystem\src\Terrain\Terrain.cpp;E:\RoamingSystem\RoamingSystem\RoamingSystem\x64\Debug\Terrain.obj
+E:\RoamingSystem\RoamingSystem\src\Water\Water.cpp;E:\RoamingSystem\RoamingSystem\RoamingSystem\x64\Debug\Water.obj
+E:\RoamingSystem\RoamingSystem\src\Water\WaterFramebuffers.cpp;E:\RoamingSystem\RoamingSystem\RoamingSystem\x64\Debug\WaterFramebuffers.obj
 E:\RoamingSystem\RoamingSystem\src\main.cpp;E:\RoamingSystem\RoamingSystem\RoamingSystem\x64\Debug\main.obj

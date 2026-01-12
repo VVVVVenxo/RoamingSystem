@@ -8,6 +8,8 @@
 #include "Core/Mesh.h"
 #include "Terrain/Terrain.h"
 #include "Environment/Skybox.h"
+#include "Water/Water.h"
+#include "Water/WaterFramebuffers.h"
 
 class RoamingApp : public Application
 {
@@ -24,6 +26,7 @@ protected:
 
 private:
     void processInput(float deltaTime);
+    void renderScene(const glm::mat4& view, const glm::mat4& projection, const glm::vec4& clipPlane);
 
     Camera m_camera;
     
@@ -47,6 +50,22 @@ private:
     float m_slopeThreshold;
     bool m_useTerrainTextures;
     bool m_wireframeMode;
+    
+    // Water
+    Water m_water;
+    WaterFramebuffers m_waterFBOs;
+    float m_waterHeight;
+    bool m_enableWater;
+    
+    // Time for animations
+    float m_time;
+    
+    // Camera modes
+    bool m_groundWalkMode;
+    float m_playerHeight;
+    
+    // Performance stats
+    int m_drawCalls;
     
     // Legacy cube (for reference)
     Shader m_cubeShader;

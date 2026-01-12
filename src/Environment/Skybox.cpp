@@ -132,6 +132,9 @@ void Skybox::render(const glm::mat4& view, const glm::mat4& projection)
     glm::mat4 viewNoTranslation = glm::mat4(glm::mat3(view));
     m_shader.setMat4("uView", viewNoTranslation);
     m_shader.setMat4("uProjection", projection);
+    
+    // Set clip plane to always pass for skybox rendering
+    m_shader.setVec4("uClipPlane", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
     // Bind cubemap
     m_cubemap.bind(0);

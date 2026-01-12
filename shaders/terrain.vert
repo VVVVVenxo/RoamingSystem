@@ -12,6 +12,7 @@ out float vHeight;
 uniform mat4 uModel;
 uniform mat4 uView;
 uniform mat4 uProjection;
+uniform vec4 uClipPlane;
 
 void main()
 {
@@ -20,6 +21,9 @@ void main()
     vNormal = mat3(transpose(inverse(uModel))) * aNormal;
     vTexCoord = aTexCoord;
     vHeight = aPos.y;
+    
+    // Clip plane for water reflection/refraction
+    gl_ClipDistance[0] = dot(worldPos, uClipPlane);
     
     gl_Position = uProjection * uView * worldPos;
 }

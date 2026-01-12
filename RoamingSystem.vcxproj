@@ -147,6 +147,8 @@
     <ClCompile Include="src\RoamingApp.cpp" />
     <ClCompile Include="src\Terrain\HeightmapLoader.cpp" />
     <ClCompile Include="src\Terrain\Terrain.cpp" />
+    <ClCompile Include="src\Water\Water.cpp" />
+    <ClCompile Include="src\Water\WaterFramebuffers.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +171,8 @@
     <ClInclude Include="src\RoamingApp.h" />
     <ClInclude Include="src\Terrain\HeightmapLoader.h" />
     <ClInclude Include="src\Terrain\Terrain.h" />
+    <ClInclude Include="src\Water\Water.h" />
+    <ClInclude Include="src\Water\WaterFramebuffers.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\test.frag" />
@@ -177,6 +181,8 @@
     <None Include="shaders\terrain.frag" />
     <None Include="shaders\skybox.vert" />
     <None Include="shaders\skybox.frag" />
+    <None Include="shaders\water.vert" />
+    <None Include="shaders\water.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

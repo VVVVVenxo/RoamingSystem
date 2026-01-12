@@ -6,6 +6,8 @@ Terrain::Terrain()
     : m_size(100.0f)
     , m_maxHeight(20.0f)
     , m_generated(false)
+    , m_vertexCount(0)
+    , m_triangleCount(0)
 {
 }
 
@@ -101,7 +103,11 @@ void Terrain::generateMesh()
     m_mesh.setVertices(vertices.data(), vertices.size() * sizeof(float), VertexLayout::positionNormalTexture());
     m_mesh.setIndices(indices.data(), indices.size());
 
-    std::cout << "Terrain mesh: " << vertices.size() / 8 << " vertices, " << indices.size() / 3 << " triangles" << std::endl;
+    // Store counts for performance stats
+    m_vertexCount = static_cast<int>(vertices.size() / 8);
+    m_triangleCount = static_cast<int>(indices.size() / 3);
+
+    std::cout << "Terrain mesh: " << m_vertexCount << " vertices, " << m_triangleCount << " triangles" << std::endl;
 }
 
 glm::vec3 Terrain::calculateNormal(int x, int z)
