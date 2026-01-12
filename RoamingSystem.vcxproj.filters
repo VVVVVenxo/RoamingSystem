@@ -57,6 +57,12 @@
     <ClCompile Include="src\Core\Mesh.cpp">
       <Filter>src\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Cubemap.cpp">
+      <Filter>src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Environment\Skybox.cpp">
+      <Filter>src\Environment</Filter>
+    </ClCompile>
     <ClCompile Include="src\Application.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -131,6 +137,12 @@
     <ClInclude Include="src\Core\Mesh.h">
       <Filter>src\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Core\Cubemap.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Environment\Skybox.h">
+      <Filter>src\Environment</Filter>
+    </ClInclude>
     <ClInclude Include="src\Application.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -155,6 +167,12 @@
       <Filter>资源文件\shaders</Filter>
     </None>
     <None Include="shaders\terrain.frag">
+      <Filter>资源文件\shaders</Filter>
+    </None>
+    <None Include="shaders\skybox.vert">
+      <Filter>资源文件\shaders</Filter>
+    </None>
+    <None Include="shaders\skybox.frag">
       <Filter>资源文件\shaders</Filter>
     </None>
   </ItemGroup>

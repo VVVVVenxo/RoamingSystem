@@ -7,6 +7,7 @@
 #include "Core/Texture.h"
 #include "Core/Mesh.h"
 #include "Terrain/Terrain.h"
+#include "Environment/Skybox.h"
 
 class RoamingApp : public Application
 {
@@ -25,6 +26,9 @@ private:
     void processInput(float deltaTime);
 
     Camera m_camera;
+    
+    // Skybox
+    Skybox m_skybox;
     
     // Terrain
     Terrain m_terrain;

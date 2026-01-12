@@ -55,22 +55,23 @@ RoamingSystem/
 ├── src/                            ✅ 已创建
 │   ├── main.cpp                    ✅ 已简化 (7行)
 │   ├── Application.h/cpp           ✅ 已完成
-│   ├── RoamingApp.h/cpp            ✅ 已完成
+│   ├── RoamingApp.h/cpp            ✅ 已完成 (含地形渲染)
 │   │
 │   ├── Core/                       ✅ 已创建
 │   │   ├── Camera.h                ✅ 已迁移
 │   │   ├── Shader.h/cpp            ✅ 已迁移
 │   │   ├── stb_image_impl.cpp      ✅ 已迁移
 │   │   ├── Texture.h/cpp           ✅ 已完成
+│   │   ├── Cubemap.h/cpp           ✅ 已完成 (立方体贴图)
 │   │   ├── TextureArray.h/cpp      ⏳ 待开发
 │   │   ├── Mesh.h/cpp              ✅ 已完成
 │   │   ├── Transform.h             ⏳ 待开发
 │   │   └── ResourceManager.h/cpp   ⏳ 待开发
 │   │
-│   ├── Terrain/                    ✅ 已创建 (空)
-│   │   ├── Terrain.h/cpp           ⏳ 待开发
-│   │   ├── HeightmapLoader.h/cpp   ⏳ 待开发
-│   │   ├── TerrainChunk.h/cpp      ⏳ 待开发
+│   ├── Terrain/                    ✅ 已完成
+│   │   ├── HeightmapLoader.h/cpp   ✅ 已完成 (高度图加载)
+│   │   ├── Terrain.h/cpp           ✅ 已完成 (网格生成、渲染)
+│   │   ├── TerrainChunk.h/cpp      ⏳ 加分项 (分块优化)
 │   │   ├── LODManager.h/cpp        ⏳ 加分项
 │   │   └── FrustumCuller.h/cpp     ⏳ 加分项
 │   │
@@ -79,8 +80,8 @@ RoamingSystem/
 │   │   ├── WaterFramebuffers.h/cpp ⏳ 待开发
 │   │   └── WaveGenerator.h/cpp     ⏳ 待开发
 │   │
-│   ├── Environment/                ✅ 已创建 (空)
-│   │   ├── Skybox.h/cpp            ⏳ 待开发
+│   ├── Environment/                ✅ 已完成
+│   │   ├── Skybox.h/cpp            ✅ 已完成 (天空盒渲染)
 │   │   ├── Sun.h/cpp               ⏳ 待开发
 │   │   └── Lighting.h/cpp          ⏳ 待开发
 │   │
@@ -91,17 +92,17 @@ RoamingSystem/
 │       └── LightingPanel.h/cpp     ⏳ 待开发
 │
 ├── shaders/                        ✅ 已有
-│   ├── test.vert/frag              ✅ 已有 (示例)
-│   ├── terrain.vert/frag           ⏳ 待开发
+│   ├── test.vert/frag              ✅ 已有 (立方体示例)
+│   ├── terrain.vert/frag           ✅ 已完成 (多纹理混合、光照)
+│   ├── skybox.vert/frag            ✅ 已完成 (立方体贴图采样)
 │   ├── water.vert/frag             ⏳ 待开发
-│   ├── skybox.vert/frag            ⏳ 待开发
 │   └── common/                     ✅ 已创建 (空)
 │       └── lighting.glsl           ⏳ 待开发
 │
 ├── assets/                         ✅ 已创建
-│   ├── heightmaps/                 ✅ 已创建 (空)
+│   ├── heightmaps/                 ✅ 已创建 (需添加高度图)
 │   ├── textures/                   ✅ 已创建
-│   │   ├── terrain/                ✅ 已创建 (空)
+│   │   ├── terrain/                ✅ 已创建 (需添加纹理)
 │   │   └── water/                  ✅ 已创建 (空)
 │   └── skybox/                     ✅ 已创建 (空)
 │
@@ -129,16 +130,22 @@ RoamingSystem/
 | **Mesh 类** | ✅ 已完成 | VAO/VBO/EBO封装、VertexLayout、预定义布局 |
 | **Application 类** | ✅ 已完成 | Game Loop封装、窗口管理、输入处理、生命周期虚函数 |
 | **RoamingApp 类** | ✅ 已完成 | 继承Application，实现立方体渲染和摄像机控制 |
+| **HeightmapLoader** | ✅ 已完成 | 高度图加载、归一化、双线性插值 |
+| **Terrain 类** | ✅ 已完成 | 地形网格生成、法线计算、高度查询、渲染 |
+| **地形着色器** | ✅ 已完成 | 多纹理混合(草/岩/雪)、方向光照、高度/坡度阈值 |
+| **地形 ImGui 面板** | ✅ 已完成 | 纹理平铺、混合参数、光照方向、线框模式 |
+| **Cubemap 类** | ✅ 已完成 | 立方体贴图加载、支持 posx/negx 和 right/left 两种命名 |
+| **Skybox 类** | ✅ 已完成 | 天空盒渲染、移除平移、深度测试优化 |
+| **天空盒着色器** | ✅ 已完成 | 立方体贴图采样、深度设为最远 |
 
 ### 待开发模块
 
 | 模块 | 状态 | 优先级 |
 |------|------|--------|
-| 地形系统 | ⏳ 待开发 | 核心 |
-| 天空盒 | ⏳ 待开发 | 中 |
-| 光照系统 | ⏳ 待开发 | 中 |
-| 水体系统 | ⏳ 待开发 | 核心 |
+| 光照系统完善 | ⏳ 待开发 | 中 |
+| 水体系统 | ⏳ 待开发 | 核心 (下一步) |
 | 编辑器UI完善 | ⏳ 待开发 | 中 |
+| TextureArray | ⏳ 待开发 | 可选优化 |
 | LOD系统 | ⏳ 待开发 | 加分项 |
 | 视锥体剔除 | ⏳ 待开发 | 加分项 |
 
@@ -164,16 +171,11 @@ RoamingSystem/
 4. ✅ **毕设足够** - 展示"大规模"概念，但不过度复杂
 5. ✅ **可扩展** - 后期加 LOD 后可轻松升级到 1024×1024
 
-### 1024×1024 设备要求
+### 注意：高度图可以是任意尺寸
 
-如果需要 1024×1024 规模：
-
-| 配置项 | 最低要求 | 推荐配置 |
-|-------|---------|---------|
-| **显卡** | GTX 1050 / RX 560 | GTX 1060 / RX 580 |
-| **显存** | 2GB | 4GB+ |
-| **内存** | 8GB | 16GB |
-| **CPU** | i5-7400 | i5-9400+ |
+代码是通用的，会自动适应加载的高度图尺寸：
+- 256×256、512×512、1024×1024 均可
+- 非正方形（如 512×256）也支持
 
 ---
 
@@ -244,12 +246,9 @@ RoamingSystem/
 │   └── terrain_512.png          # 从 terrain.party 下载
 ├── textures/
 │   ├── terrain/
-│   │   ├── grass_diffuse.jpg    # Poly Haven - Ground Grass
-│   │   ├── grass_normal.jpg
-│   │   ├── rock_diffuse.jpg     # Poly Haven - Rock Boulder
-│   │   ├── rock_normal.jpg
-│   │   ├── snow_diffuse.jpg     # Poly Haven - Snow
-│   │   └── snow_normal.jpg
+│   │   ├── grass.jpg            # Poly Haven - Ground Grass
+│   │   ├── rock.jpg             # Poly Haven - Rock Boulder
+│   │   └── snow.jpg             # Poly Haven - Snow
 │   └── water/
 │       ├── dudv.png             # 搜索 "water dudv map"
 │       └── normal.png           # 搜索 "water normal map"
@@ -266,7 +265,7 @@ RoamingSystem/
 
 ## 📅 开发计划与里程碑
 
-### 阶段一：引擎核心重构 (1-2周)
+### 阶段一：引擎核心重构 (1-2周) ✅ 已完成
 
 **目标**：建立可扩展的引擎架构
 
@@ -282,37 +281,37 @@ RoamingSystem/
 
 ---
 
-### 阶段二：大规模地形渲染 (2-3周) ⭐核心功能
+### 阶段二：大规模地形渲染 (2-3周) ✅ 已完成
 
 **目标**：实现高度图地形 + 多材质混合
 
 | 任务 | 说明 | 状态 |
 |------|------|------|
-| 2.1 HeightmapLoader | 从灰度图生成地形网格顶点 | ⏳ |
-| 2.2 TerrainChunk | 地形分块，每块独立 VAO | ⏳ |
-| 2.3 TextureArray | 使用 `GL_TEXTURE_2D_ARRAY` 管理多地形材质 | ⏳ |
-| 2.4 地形着色器 | Splatmap 多纹理混合、法线计算 | ⏳ |
+| 2.1 HeightmapLoader | 从灰度图生成地形网格顶点 | ✅ |
+| 2.2 Terrain 类 | 网格生成、法线计算、渲染 | ✅ |
+| 2.3 地形着色器 | 多纹理混合、方向光照 | ✅ |
+| 2.4 ImGui 控制面板 | 纹理平铺、混合阈值、线框模式 | ✅ |
+| 2.5 TerrainChunk 分块 | 地形分块优化 | ⏳ 加分项 |
+| 2.6 TextureArray | 使用 `GL_TEXTURE_2D_ARRAY` 优化 | ⏳ 可选 |
 
-**关键技术点**：
-- **Texture Array**：避免多纹理切换的 Draw Call 开销
-- **Splatmap**：使用权重图控制不同材质的混合比例
+**产出**：可漫游的大规模地形，支持多材质混合
 
 ---
 
-### 阶段三：天空与光照 (1-2周)
+### 阶段三：天空与光照 (1-2周) ✅ 基本完成
 
 **目标**：构建场景光照环境
 
 | 任务 | 说明 | 状态 |
 |------|------|------|
-| 3.1 Skybox | 立方体贴图天空盒 | ⏳ |
-| 3.2 方向光 | 模拟太阳光，可调节方向 | ⏳ |
-| 3.3 Blinn-Phong 光照 | 地形的漫反射+镜面反射 | ⏳ |
-| 3.4 日夜循环(可选) | 太阳角度随时间变化 | ⏳ |
+| 3.1 Skybox | 立方体贴图天空盒 | ✅ 已完成 |
+| 3.2 方向光完善 | 模拟太阳光，可调节方向/颜色 | ⏳ 可选 |
+| 3.3 Blinn-Phong 光照 | 地形的漫反射+镜面反射 | ⏳ 可选 |
+| 3.4 日夜循环(可选) | 太阳角度随时间变化 | ⏳ 可选 |
 
 ---
 
-### 阶段四：动态水体 (2-3周) ⭐亮点功能
+### 阶段四：动态水体 (2-3周) ⭐亮点功能 ⬅️ 当前阶段
 
 **目标**：实现具有真实感的水面效果
 
@@ -353,13 +352,13 @@ RoamingSystem/
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  阶段一：引擎核心重构              1-2 周                    │
+│  阶段一：引擎核心重构              1-2 周    ✅ 已完成       │
 ├─────────────────────────────────────────────────────────────┤
-│  阶段二：地形渲染 (512×512)        2-3 周  ⭐核心            │
+│  阶段二：地形渲染 (512×512)        2-3 周    ✅ 已完成       │
 ├─────────────────────────────────────────────────────────────┤
-│  阶段三：天空与光照                1-2 周                    │
+│  阶段三：天空与光照                1-2 周    ✅ 基本完成     │
 ├─────────────────────────────────────────────────────────────┤
-│  阶段四：动态水体                  2-3 周  ⭐亮点            │
+│  阶段四：动态水体                  2-3 周    ⬅️ 当前        │
 ├─────────────────────────────────────────────────────────────┤
 │  阶段五：编辑器完善 + 打包          1 周                     │
 ├─────────────────────────────────────────────────────────────┤
@@ -367,6 +366,7 @@ RoamingSystem/
 └─────────────────────────────────────────────────────────────┘
 
 预计总工期：7-11 周（不含加分项）
+已完成进度：约 55%
 ```
 
 ---
@@ -483,9 +483,10 @@ bool FrustumCuller::isVisible(const AABB& box) {
 | 2026-01-12 | 完成 Mesh 类：VAO/VBO/EBO封装、VertexLayout顶点布局、预定义布局(positionColorTexture等)、RAII资源管理 |
 | 2026-01-12 | 完成 Application 类：Game Loop封装、窗口管理、输入处理、ImGui集成；创建 RoamingApp 派生类；main.cpp 简化至7行 |
 | 2026-01-12 | 重构 Shader 类：添加默认构造函数、load()方法、析构函数、setVec3/setVec4 |
+| 2026-01-12 | **完成地形系统**：HeightmapLoader(高度图加载/插值)、Terrain(网格生成/渲染)、terrain.vert/frag(多纹理混合/光照)、ImGui控制面板 |
+| 2026-01-12 | **完成天空盒系统**：Cubemap(立方体贴图加载，支持posx/negx和right/left命名)、Skybox(天空盒渲染)、skybox.vert/frag着色器 |
 
 ---
 
-*文档版本: v1.4*
+*文档版本: v1.6*
 *最后更新: 2026-01-12*
-

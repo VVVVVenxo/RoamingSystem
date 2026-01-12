@@ -10,6 +10,8 @@ E:\RoamingSystem\RoamingSystem\src\Core\Shader.cpp;E:\RoamingSystem\RoamingSyste
 E:\RoamingSystem\RoamingSystem\src\Core\stb_image_impl.cpp;E:\RoamingSystem\RoamingSystem\RoamingSystem\x64\Debug\stb_image_impl.obj
 E:\RoamingSystem\RoamingSystem\src\Core\Texture.cpp;E:\RoamingSystem\RoamingSystem\RoamingSystem\x64\Debug\Texture.obj
 E:\RoamingSystem\RoamingSystem\src\Core\Mesh.cpp;E:\RoamingSystem\RoamingSystem\RoamingSystem\x64\Debug\Mesh.obj
+E:\RoamingSystem\RoamingSystem\src\Core\Cubemap.cpp;E:\RoamingSystem\RoamingSystem\RoamingSystem\x64\Debug\Cubemap.obj
+E:\RoamingSystem\RoamingSystem\src\Environment\Skybox.cpp;E:\RoamingSystem\RoamingSystem\RoamingSystem\x64\Debug\Skybox.obj
 E:\RoamingSystem\RoamingSystem\src\Application.cpp;E:\RoamingSystem\RoamingSystem\RoamingSystem\x64\Debug\Application.obj
 E:\RoamingSystem\RoamingSystem\src\RoamingApp.cpp;E:\RoamingSystem\RoamingSystem\RoamingSystem\x64\Debug\RoamingApp.obj
 E:\RoamingSystem\RoamingSystem\src\Terrain\HeightmapLoader.cpp;E:\RoamingSystem\RoamingSystem\RoamingSystem\x64\Debug\HeightmapLoader.obj

@@ -3,7 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 RoamingApp::RoamingApp()
-    : Application(1280, 720, "Roaming Engine - Terrain System")
+    : Application(1920, 1080, "Roaming Engine - Terrain System")
     , m_camera(glm::vec3(0.0f, 30.0f, 50.0f))
     , m_terrainSize(256.0f)
     , m_terrainMaxHeight(50.0f)
@@ -21,6 +21,9 @@ RoamingApp::RoamingApp()
 
 void RoamingApp::onInit()
 {
+    // Load skybox
+    m_skybox.load("assets/skybox");
+    
     // Load terrain shader
     m_terrainShader.load("shaders/terrain.vert", "shaders/terrain.frag");
 
@@ -36,11 +39,11 @@ void RoamingApp::onInit()
     }
 
     // Load terrain textures (optional)
-    m_useTerrainTextures = m_grassTexture.load("assets/textures/terrain/grass.jpg");
+    m_useTerrainTextures = m_grassTexture.load("assets/textures/terrain/Ground037_1K-PNG_Color.png");
     if (m_useTerrainTextures)
     {
-        m_rockTexture.load("assets/textures/terrain/rock.jpg");
-        m_snowTexture.load("assets/textures/terrain/snow.jpg");
+        m_rockTexture.load("assets/textures/terrain/Rocks001_1K-PNG_Color.png");
+        m_snowTexture.load("assets/textures/terrain/Snow010A_1K-PNG_Color.png");
     }
 
     // Load cube shader and mesh for reference
@@ -166,16 +169,6 @@ void RoamingApp::onScroll(float yoffset)
 
 void RoamingApp::onRender()
 {
-    // Set wireframe mode
-    if (m_wireframeMode)
-    {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    }
-    else
-    {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
-
     // Common matrices
     glm::mat4 projection = glm::perspective(
         glm::radians(m_camera.Zoom),
@@ -185,6 +178,24 @@ void RoamingApp::onRender()
     );
     glm::mat4 view = m_camera.GetViewMatrix();
     glm::mat4 model = glm::mat4(1.0f);
+
+    // Render skybox first (with depth write disabled)
+    if (m_skybox.isLoaded())
+    {
+        glDepthMask(GL_FALSE);
+        m_skybox.render(view, projection);
+        glDepthMask(GL_TRUE);
+    }
+
+    // Set wireframe mode for terrain
+    if (m_wireframeMode)
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+    else
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
 
     // Render terrain
     if (m_terrain.isGenerated())

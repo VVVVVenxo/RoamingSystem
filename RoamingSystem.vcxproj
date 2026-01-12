@@ -141,6 +141,8 @@
     <ClCompile Include="src\Core\stb_image_impl.cpp" />
     <ClCompile Include="src\Core\Texture.cpp" />
     <ClCompile Include="src\Core\Mesh.cpp" />
+    <ClCompile Include="src\Core\Cubemap.cpp" />
+    <ClCompile Include="src\Environment\Skybox.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\RoamingApp.cpp" />
     <ClCompile Include="src\Terrain\HeightmapLoader.cpp" />
@@ -161,6 +163,8 @@
     <ClInclude Include="src\Core\Shader.h" />
     <ClInclude Include="src\Core\Texture.h" />
     <ClInclude Include="src\Core\Mesh.h" />
+    <ClInclude Include="src\Core\Cubemap.h" />
+    <ClInclude Include="src\Environment\Skybox.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\RoamingApp.h" />
     <ClInclude Include="src\Terrain\HeightmapLoader.h" />
@@ -169,6 +173,10 @@
   <ItemGroup>
     <None Include="shaders\test.frag" />
     <None Include="shaders\test.vert" />
+    <None Include="shaders\terrain.vert" />
+    <None Include="shaders\terrain.frag" />
+    <None Include="shaders\skybox.vert" />
+    <None Include="shaders\skybox.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
