@@ -41,6 +41,10 @@ bool SceneSettingsManager::save(const SceneSettings& settings, const std::string
     file << "daySpeed=" << settings.daySpeed << std::endl;
     file << "autoAdvance=" << (settings.autoAdvance ? 1 : 0) << std::endl;
 
+    file << std::endl << "[Fog]" << std::endl;
+    file << "enableFog=" << (settings.enableFog ? 1 : 0) << std::endl;
+    file << "fogDensity=" << settings.fogDensity << std::endl;
+
     file << std::endl << "[Camera]" << std::endl;
     file << "cameraPosX=" << settings.cameraPos.x << std::endl;
     file << "cameraPosY=" << settings.cameraPos.y << std::endl;
@@ -112,6 +116,10 @@ bool SceneSettingsManager::load(SceneSettings& settings, const std::string& file
         else if (key == "timeOfDay") settings.timeOfDay = std::stof(value);
         else if (key == "daySpeed") settings.daySpeed = std::stof(value);
         else if (key == "autoAdvance") settings.autoAdvance = (std::stoi(value) != 0);
+        
+        // Fog
+        else if (key == "enableFog") settings.enableFog = (std::stoi(value) != 0);
+        else if (key == "fogDensity") settings.fogDensity = std::stof(value);
         
         // Camera
         else if (key == "cameraPosX") settings.cameraPos.x = std::stof(value);

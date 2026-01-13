@@ -29,6 +29,10 @@ struct SceneSettings
     float daySpeed = 0.1f;
     bool autoAdvance = false;
     
+    // Fog
+    bool enableFog = true;
+    float fogDensity = 0.003f;
+    
     // Camera
     glm::vec3 cameraPos = glm::vec3(0.0f, 30.0f, 50.0f);
     float cameraYaw = -90.0f;

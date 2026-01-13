@@ -19,7 +19,15 @@ uniform float uWaveStrength;
 uniform float uShineDamper;
 uniform float uReflectivity;
 uniform vec3 uWaterColor;
+uniform vec3 uLightColor;
+uniform float uLightIntensity;
 uniform bool uUseTextures;
+
+// Fog parameters
+uniform vec3 uCameraPos;
+uniform vec3 uFogColor;
+uniform float uFogDensity;
+uniform bool uFogEnabled;
 
 const float waveSpeed = 0.03;
 const float near = 0.1;
@@ -81,11 +89,11 @@ void main()
     refractiveFactor = pow(refractiveFactor, 0.5);
     refractiveFactor = clamp(refractiveFactor, 0.0, 1.0);
     
-    // Specular highlights
+    // Specular highlights with dynamic sun color
     vec3 reflectedLight = reflect(normalize(vFromLight), normal);
     float specular = max(dot(reflectedLight, viewVector), 0.0);
     specular = pow(specular, uShineDamper);
-    vec3 specularHighlights = vec3(1.0, 1.0, 0.9) * specular * uReflectivity;
+    vec3 specularHighlights = uLightColor * specular * uReflectivity * uLightIntensity;
     
     // Mix reflection and refraction based on Fresnel
     FragColor = mix(reflectColor, refractColor, refractiveFactor);
@@ -95,6 +103,15 @@ void main()
     
     // Add specular highlights
     FragColor.rgb += specularHighlights;
+    
+    // Apply fog
+    if (uFogEnabled)
+    {
+        float distance = length(vWorldPos - uCameraPos);
+        float fogFactor = exp(-distance * uFogDensity);
+        fogFactor = clamp(fogFactor, 0.0, 1.0);
+        FragColor.rgb = mix(uFogColor, FragColor.rgb, fogFactor);
+    }
     
     // Slight transparency
     FragColor.a = 0.9;

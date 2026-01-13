@@ -21,6 +21,7 @@ public:
     glm::vec3 getSunColor() const;
     glm::vec3 getAmbientColor() const;
     glm::vec3 getSkyColor() const;
+    glm::vec3 getFogColor() const;
     float getSunIntensity() const;
     
 private:

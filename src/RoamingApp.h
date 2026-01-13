@@ -73,6 +73,10 @@ private:
     bool m_groundWalkMode;
     float m_playerHeight;
     
+    // Fog
+    bool m_enableFog;
+    float m_fogDensity;
+    
     // Performance stats
     int m_drawCalls;
     

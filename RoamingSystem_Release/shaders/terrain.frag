@@ -17,11 +17,20 @@ uniform bool uUseTextures;
 uniform float uMaxHeight;
 uniform float uTextureTiling;
 uniform vec3 uLightDir;
+uniform vec3 uLightColor;
+uniform vec3 uAmbientColor;
+uniform float uLightIntensity;
 
 // Height thresholds for texture blending
-uniform float uGrassMaxHeight;  // Below this: grass
-uniform float uRockMaxHeight;   // Between grass and this: rock
-uniform float uSlopeThreshold;  // Slope above this: rock
+uniform float uGrassMaxHeight;
+uniform float uRockMaxHeight;
+uniform float uSlopeThreshold;
+
+// Fog parameters
+uniform vec3 uCameraPos;
+uniform vec3 uFogColor;
+uniform float uFogDensity;
+uniform bool uFogEnabled;
 
 void main()
 {
@@ -78,20 +87,24 @@ void main()
         albedo = grassColor * grassWeight + rockColor * rockWeight + snowColor * snowWeight;
     }
     
-    // Simple directional lighting
+    // Directional lighting with dynamic color
     vec3 lightDir = normalize(-uLightDir);
     float NdotL = max(dot(normal, lightDir), 0.0);
     
-    // Ambient and diffuse
-    vec3 ambient = 0.3 * albedo;
-    vec3 diffuse = 0.7 * NdotL * albedo;
-    
-    // Add slight fog based on distance for depth
-    float fogFactor = 0.0; // Can be enabled later
-    vec3 fogColor = vec3(0.6, 0.7, 0.8);
+    // Ambient and diffuse with dynamic colors
+    vec3 ambient = uAmbientColor * albedo;
+    vec3 diffuse = uLightIntensity * NdotL * uLightColor * albedo;
     
     vec3 finalColor = ambient + diffuse;
-    finalColor = mix(finalColor, fogColor, fogFactor);
+    
+    // Apply fog
+    if (uFogEnabled)
+    {
+        float distance = length(vWorldPos - uCameraPos);
+        float fogFactor = exp(-distance * uFogDensity);
+        fogFactor = clamp(fogFactor, 0.0, 1.0);
+        finalColor = mix(uFogColor, finalColor, fogFactor);
+    }
     
     FragColor = vec4(finalColor, 1.0);
 }

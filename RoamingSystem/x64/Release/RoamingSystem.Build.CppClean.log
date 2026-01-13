@@ -21,6 +21,10 @@ e:\roamingsystem\roamingsystem\roamingsystem\x64\release\imgui_draw.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\imgui_demo.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\imgui.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\main.obj
+e:\roamingsystem\roamingsystem\roamingsystem\x64\release\lighting.obj
+e:\roamingsystem\roamingsystem\roamingsystem\x64\release\chunkedterrain.obj
+e:\roamingsystem\roamingsystem\roamingsystem\x64\release\terrainchunk.obj
+e:\roamingsystem\roamingsystem\roamingsystem\x64\release\frustum.obj
 e:\roamingsystem\roamingsystem\x64\release\roamingsystem.exe
 e:\roamingsystem\roamingsystem\x64\release\roamingsystem.pdb
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\roamingsystem.ipdb

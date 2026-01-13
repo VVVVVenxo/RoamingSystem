@@ -75,6 +75,15 @@
     <ClCompile Include="src\Terrain\HeightmapLoader.cpp">
       <Filter>src\Terrain</Filter>
     </ClCompile>
+    <ClCompile Include="src\Terrain\Frustum.cpp">
+      <Filter>src\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Terrain\TerrainChunk.cpp">
+      <Filter>src\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Terrain\ChunkedTerrain.cpp">
+      <Filter>src\Terrain</Filter>
+    </ClCompile>
     <ClCompile Include="src\Terrain\Terrain.cpp">
       <Filter>src\Terrain</Filter>
     </ClCompile>
@@ -165,6 +174,15 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Terrain\HeightmapLoader.h">
+      <Filter>src\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Terrain\Frustum.h">
+      <Filter>src\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Terrain\TerrainChunk.h">
+      <Filter>src\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Terrain\ChunkedTerrain.h">
       <Filter>src\Terrain</Filter>
     </ClInclude>
     <ClInclude Include="src\Terrain\Terrain.h">

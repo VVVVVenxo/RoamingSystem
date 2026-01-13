@@ -17,14 +17,20 @@ uniform bool uUseTextures;
 uniform float uMaxHeight;
 uniform float uTextureTiling;
 uniform vec3 uLightDir;
-uniform vec3 uLightColor;       // Sun color
-uniform vec3 uAmbientColor;     // Ambient light color
-uniform float uLightIntensity;  // Sun intensity
+uniform vec3 uLightColor;
+uniform vec3 uAmbientColor;
+uniform float uLightIntensity;
 
 // Height thresholds for texture blending
-uniform float uGrassMaxHeight;  // Below this: grass
-uniform float uRockMaxHeight;   // Between grass and this: rock
-uniform float uSlopeThreshold;  // Slope above this: rock
+uniform float uGrassMaxHeight;
+uniform float uRockMaxHeight;
+uniform float uSlopeThreshold;
+
+// Fog parameters
+uniform vec3 uCameraPos;
+uniform vec3 uFogColor;
+uniform float uFogDensity;
+uniform bool uFogEnabled;
 
 void main()
 {
@@ -90,6 +96,15 @@ void main()
     vec3 diffuse = uLightIntensity * NdotL * uLightColor * albedo;
     
     vec3 finalColor = ambient + diffuse;
+    
+    // Apply fog
+    if (uFogEnabled)
+    {
+        float distance = length(vWorldPos - uCameraPos);
+        float fogFactor = exp(-distance * uFogDensity);
+        fogFactor = clamp(fogFactor, 0.0, 1.0);
+        finalColor = mix(uFogColor, finalColor, fogFactor);
+    }
     
     FragColor = vec4(finalColor, 1.0);
 }

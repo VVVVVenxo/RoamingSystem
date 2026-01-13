@@ -107,7 +107,22 @@ bool Cubemap::load(const std::vector<std::string>& faces)
 bool Cubemap::loadFromDirectory(const std::string& directory, const std::string& extension)
 {
     // Order: +X, -X, +Y, -Y, +Z, -Z
-    // Try OpenGL standard naming first (posx/negx)
+    // Try short naming first (px/nx)
+    std::vector<std::string> facesShort = {
+        directory + "/px" + extension,
+        directory + "/nx" + extension,
+        directory + "/py" + extension,
+        directory + "/ny" + extension,
+        directory + "/pz" + extension,
+        directory + "/nz" + extension
+    };
+
+    if (load(facesShort))
+    {
+        return true;
+    }
+
+    // Try OpenGL standard naming (posx/negx)
     std::vector<std::string> facesGL = {
         directory + "/posx" + extension,
         directory + "/negx" + extension,

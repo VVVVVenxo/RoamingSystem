@@ -19,6 +19,8 @@ RoamingApp::RoamingApp()
     , m_time(0.0f)
     , m_groundWalkMode(false)
     , m_playerHeight(1.8f)
+    , m_enableFog(true)
+    , m_fogDensity(0.003f)
     , m_drawCalls(0)
     , m_showCube(false)
 {
@@ -31,7 +33,7 @@ void RoamingApp::onInit()
     loadSettings();
     
     // Load skybox
-    m_skybox.load("assets/skybox");
+    m_skybox.load("assets/skybox", ".png");
     
     // Load terrain shader
     m_terrainShader.load("shaders/terrain.vert", "shaders/terrain.frag");
@@ -243,6 +245,12 @@ void RoamingApp::renderScene(const glm::mat4& view, const glm::mat4& projection,
         m_terrainShader.setVec3("uAmbientColor", m_lighting.getAmbientColor());
         m_terrainShader.setFloat("uLightIntensity", m_lighting.getSunIntensity());
         
+        // Fog parameters
+        m_terrainShader.setVec3("uCameraPos", m_camera.Position);
+        m_terrainShader.setVec3("uFogColor", m_lighting.getFogColor());
+        m_terrainShader.setFloat("uFogDensity", m_fogDensity);
+        m_terrainShader.setBool("uFogEnabled", m_enableFog);
+        
         // Bind textures if available
         if (m_useTerrainTextures)
         {
@@ -254,8 +262,9 @@ void RoamingApp::renderScene(const glm::mat4& view, const glm::mat4& projection,
             m_terrainShader.setInt("uSnowTexture", 2);
         }
         
-        m_terrain.render(m_terrainShader);
-        m_drawCalls++;
+        glm::mat4 vp = projection * view;
+        m_terrain.render(m_terrainShader, m_camera.Position, vp);
+        m_drawCalls += m_terrain.getVisibleChunks();
     }
 
     // Render reference cube
@@ -338,7 +347,8 @@ void RoamingApp::onRender()
                        m_lighting.getSunColor(), m_lighting.getSunIntensity(), m_time,
                        m_waterFBOs.getReflectionTexture(),
                        m_waterFBOs.getRefractionTexture(),
-                       m_waterFBOs.getRefractionDepthTexture());
+                       m_waterFBOs.getRefractionDepthTexture(),
+                       m_lighting.getFogColor(), m_fogDensity, m_enableFog);
         m_drawCalls++;
     }
 }
@@ -354,7 +364,9 @@ void RoamingApp::onImGui()
     
     if (m_terrain.isGenerated())
     {
-        ImGui::Text("Vertices: %d", m_terrain.getVertexCount());
+        ImGui::Text("Chunks: %d / %d visible", m_terrain.getVisibleChunks(), m_terrain.getTotalChunks());
+        ImGui::Text("Culled: %d (%.1f%%)", m_terrain.getCulledChunks(), 
+            m_terrain.getTotalChunks() > 0 ? 100.0f * m_terrain.getCulledChunks() / m_terrain.getTotalChunks() : 0.0f);
         ImGui::Text("Triangles: %d", m_terrain.getTriangleCount());
     }
     ImGui::Text("Draw Calls: %d", m_drawCalls);
@@ -410,6 +422,19 @@ void RoamingApp::onImGui()
             ImGui::SliderFloat("Grass Max", &m_grassMaxHeight, 0.0f, 1.0f);
             ImGui::SliderFloat("Rock Max", &m_rockMaxHeight, 0.0f, 1.0f);
             ImGui::SliderFloat("Slope Threshold", &m_slopeThreshold, 0.0f, 1.0f);
+            
+            ImGui::Separator();
+            ImGui::Text("LOD & Culling");
+            auto& ct = m_terrain.getChunkedTerrain();
+            ImGui::Checkbox("Enable Frustum Culling", &ct.m_enableFrustumCulling);
+            ImGui::Checkbox("Enable LOD", &ct.m_enableLOD);
+            if (ct.m_enableLOD)
+            {
+                ImGui::SliderFloat("LOD0 Distance", &ct.m_lodDistances[0], 50.0f, 200.0f);
+                ImGui::SliderFloat("LOD1 Distance", &ct.m_lodDistances[1], 100.0f, 400.0f);
+                ImGui::SliderFloat("LOD2 Distance", &ct.m_lodDistances[2], 200.0f, 600.0f);
+                ImGui::SliderFloat("LOD3 Distance", &ct.m_lodDistances[3], 400.0f, 1000.0f);
+            }
         }
         else
         {
@@ -474,6 +499,21 @@ void RoamingApp::onImGui()
         
         glm::vec3 sunColor = m_lighting.getSunColor();
         ImGui::ColorEdit3("Sun Color", &sunColor.x, ImGuiColorEditFlags_NoInputs);
+    }
+    
+    // Fog Section
+    if (ImGui::CollapsingHeader("Fog"))
+    {
+        ImGui::Checkbox("Enable Fog", &m_enableFog);
+        
+        if (m_enableFog)
+        {
+            ImGui::SliderFloat("Fog Density", &m_fogDensity, 0.0f, 0.02f, "%.4f");
+            
+            glm::vec3 fogColor = m_lighting.getFogColor();
+            ImGui::ColorEdit3("Fog Color", &fogColor.x, ImGuiColorEditFlags_NoInputs);
+            ImGui::Text("(Color follows time of day)");
+        }
     }
     
     // Settings buttons
@@ -543,6 +583,10 @@ SceneSettings RoamingApp::gatherSettings()
     settings.daySpeed = m_lighting.m_daySpeed;
     settings.autoAdvance = m_lighting.m_autoAdvance;
     
+    // Fog
+    settings.enableFog = m_enableFog;
+    settings.fogDensity = m_fogDensity;
+    
     // Camera
     settings.cameraPos = m_camera.Position;
     settings.cameraYaw = m_camera.Yaw;
@@ -583,6 +627,10 @@ void RoamingApp::applySettings(const SceneSettings& settings)
     m_lighting.m_timeOfDay = settings.timeOfDay;
     m_lighting.m_daySpeed = settings.daySpeed;
     m_lighting.m_autoAdvance = settings.autoAdvance;
+    
+    // Fog
+    m_enableFog = settings.enableFog;
+    m_fogDensity = settings.fogDensity;
     
     // Camera
     m_camera.Position = settings.cameraPos;

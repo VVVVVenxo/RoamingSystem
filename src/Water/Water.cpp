@@ -101,7 +101,8 @@ void Water::render(const glm::mat4& view, const glm::mat4& projection,
                    const glm::vec3& cameraPos, const glm::vec3& lightDir, 
                    const glm::vec3& lightColor, float lightIntensity, float time,
                    unsigned int reflectionTex, unsigned int refractionTex,
-                   unsigned int depthTex)
+                   unsigned int depthTex,
+                   const glm::vec3& fogColor, float fogDensity, bool fogEnabled)
 {
     if (!m_initialized)
     {
@@ -125,6 +126,11 @@ void Water::render(const glm::mat4& view, const glm::mat4& projection,
     m_shader.setVec3("uLightDir", lightDir);
     m_shader.setVec3("uLightColor", lightColor);
     m_shader.setFloat("uLightIntensity", lightIntensity);
+    
+    // Fog parameters
+    m_shader.setVec3("uFogColor", fogColor);
+    m_shader.setFloat("uFogDensity", fogDensity);
+    m_shader.setBool("uFogEnabled", fogEnabled);
 
     // Water parameters
     m_shader.setFloat("uTime", time);

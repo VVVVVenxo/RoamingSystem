@@ -1,8 +1,7 @@
 #ifndef TERRAIN_H
 #define TERRAIN_H
 
-#include "HeightmapLoader.h"
-#include "Core/Mesh.h"
+#include "ChunkedTerrain.h"
 #include "Core/Shader.h"
 #include <glm/glm.hpp>
 #include <string>
@@ -13,37 +12,31 @@ public:
     Terrain();
     ~Terrain();
 
-    // Generate terrain from heightmap
     bool generate(const std::string& heightmapPath, float size, float maxHeight);
 
-    // Render terrain
-    void render(Shader& shader);
+    void render(Shader& shader, const glm::vec3& cameraPos, const glm::mat4& viewProjection);
 
-    // Get terrain height at world coordinates (for camera collision)
     float getHeightAt(float worldX, float worldZ) const;
 
     // Accessors
-    float getSize() const { return m_size; }
-    float getMaxHeight() const { return m_maxHeight; }
-    bool isGenerated() const { return m_generated; }
-    int getGridWidth() const { return m_heightmap.getWidth(); }
-    int getGridHeight() const { return m_heightmap.getGridHeight(); }
+    float getSize() const { return m_chunkedTerrain.getSize(); }
+    float getMaxHeight() const { return m_chunkedTerrain.getMaxHeight(); }
+    bool isGenerated() const { return m_chunkedTerrain.isGenerated(); }
+    int getGridWidth() const { return m_chunkedTerrain.getGridWidth(); }
+    int getGridHeight() const { return m_chunkedTerrain.getGridHeight(); }
     
-    // Performance stats
-    int getVertexCount() const { return m_vertexCount; }
-    int getTriangleCount() const { return m_triangleCount; }
+    // Statistics
+    int getVertexCount() const { return m_chunkedTerrain.getTotalVertices(); }
+    int getTriangleCount() const { return m_chunkedTerrain.getRenderedTriangles(); }
+    int getTotalChunks() const { return m_chunkedTerrain.getTotalChunks(); }
+    int getVisibleChunks() const { return m_chunkedTerrain.getVisibleChunks(); }
+    int getCulledChunks() const { return m_chunkedTerrain.getCulledChunks(); }
+    
+    // LOD/Culling settings (exposed for ImGui)
+    ChunkedTerrain& getChunkedTerrain() { return m_chunkedTerrain; }
 
 private:
-    HeightmapLoader m_heightmap;
-    Mesh m_mesh;
-    float m_size;
-    float m_maxHeight;
-    bool m_generated;
-    int m_vertexCount;
-    int m_triangleCount;
-
-    void generateMesh();
-    glm::vec3 calculateNormal(int x, int z);
+    ChunkedTerrain m_chunkedTerrain;
 };
 
 #endif

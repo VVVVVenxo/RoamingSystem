@@ -176,3 +176,38 @@ float Lighting::getSunIntensity() const
         return 0.1f;
     }
 }
+
+glm::vec3 Lighting::getFogColor() const
+{
+    float sunHeight = getSunHeight();
+    
+    // Fog color follows sky but slightly desaturated
+    glm::vec3 dayFog = glm::vec3(0.7f, 0.8f, 0.9f);         // Light blue-white
+    glm::vec3 sunsetFog = glm::vec3(0.9f, 0.6f, 0.4f);      // Warm orange
+    glm::vec3 twilightFog = glm::vec3(0.3f, 0.25f, 0.35f);  // Purple gray
+    glm::vec3 nightFog = glm::vec3(0.05f, 0.05f, 0.1f);     // Dark blue
+    
+    if (sunHeight > 0.3f)
+    {
+        return dayFog;
+    }
+    else if (sunHeight > 0.0f)
+    {
+        float t = sunHeight / 0.3f;
+        return glm::mix(sunsetFog, dayFog, t);
+    }
+    else if (sunHeight > -0.2f)
+    {
+        float t = (sunHeight + 0.2f) / 0.2f;
+        return glm::mix(twilightFog, sunsetFog, t);
+    }
+    else if (sunHeight > -0.5f)
+    {
+        float t = (sunHeight + 0.5f) / 0.3f;
+        return glm::mix(nightFog, twilightFog, t);
+    }
+    else
+    {
+        return nightFog;
+    }
+}

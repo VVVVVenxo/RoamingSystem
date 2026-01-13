@@ -19,9 +19,15 @@ uniform float uWaveStrength;
 uniform float uShineDamper;
 uniform float uReflectivity;
 uniform vec3 uWaterColor;
-uniform vec3 uLightColor;       // Sun color for specular
-uniform float uLightIntensity;  // Sun intensity
+uniform vec3 uLightColor;
+uniform float uLightIntensity;
 uniform bool uUseTextures;
+
+// Fog parameters
+uniform vec3 uCameraPos;
+uniform vec3 uFogColor;
+uniform float uFogDensity;
+uniform bool uFogEnabled;
 
 const float waveSpeed = 0.03;
 const float near = 0.1;
@@ -97,6 +103,15 @@ void main()
     
     // Add specular highlights
     FragColor.rgb += specularHighlights;
+    
+    // Apply fog
+    if (uFogEnabled)
+    {
+        float distance = length(vWorldPos - uCameraPos);
+        float fogFactor = exp(-distance * uFogDensity);
+        fogFactor = clamp(fogFactor, 0.0, 1.0);
+        FragColor.rgb = mix(uFogColor, FragColor.rgb, fogFactor);
+    }
     
     // Slight transparency
     FragColor.a = 0.9;

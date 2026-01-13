@@ -19,7 +19,8 @@ public:
                 const glm::vec3& cameraPos, const glm::vec3& lightDir, 
                 const glm::vec3& lightColor, float lightIntensity, float time,
                 unsigned int reflectionTex, unsigned int refractionTex,
-                unsigned int depthTex);
+                unsigned int depthTex,
+                const glm::vec3& fogColor, float fogDensity, bool fogEnabled);
 
     // Accessors
     float getHeight() const { return m_height; }

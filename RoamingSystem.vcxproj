@@ -153,6 +153,9 @@
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\RoamingApp.cpp" />
     <ClCompile Include="src\Terrain\HeightmapLoader.cpp" />
+    <ClCompile Include="src\Terrain\Frustum.cpp" />
+    <ClCompile Include="src\Terrain\TerrainChunk.cpp" />
+    <ClCompile Include="src\Terrain\ChunkedTerrain.cpp" />
     <ClCompile Include="src\Terrain\Terrain.cpp" />
     <ClCompile Include="src\Water\Water.cpp" />
     <ClCompile Include="src\Water\WaterFramebuffers.cpp" />
@@ -179,6 +182,9 @@
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\RoamingApp.h" />
     <ClInclude Include="src\Terrain\HeightmapLoader.h" />
+    <ClInclude Include="src\Terrain\Frustum.h" />
+    <ClInclude Include="src\Terrain\TerrainChunk.h" />
+    <ClInclude Include="src\Terrain\ChunkedTerrain.h" />
     <ClInclude Include="src\Terrain\Terrain.h" />
     <ClInclude Include="src\Water\Water.h" />
     <ClInclude Include="src\Water\WaterFramebuffers.h" />
