@@ -82,14 +82,10 @@ RoamingSystem/
 │   │
 │   ├── Environment/                ✅ 已完成
 │   │   ├── Skybox.h/cpp            ✅ 已完成 (天空盒渲染)
-│   │   ├── Sun.h/cpp               ⏳ 待开发
-│   │   └── Lighting.h/cpp          ⏳ 待开发
+│   │   └── Lighting.h/cpp          ✅ 已完成 (日夜循环系统)
 │   │
-│   └── Editor/                     ✅ 已创建 (空)
-│       ├── EditorUI.h/cpp          ⏳ 待开发
-│       ├── TerrainPanel.h/cpp      ⏳ 待开发
-│       ├── WaterPanel.h/cpp        ⏳ 待开发
-│       └── LightingPanel.h/cpp     ⏳ 待开发
+│   └── Editor/                     ✅ 已完成
+│       └── SceneSettings.h/cpp     ✅ 已完成 (场景参数保存/加载)
 │
 ├── shaders/                        ✅ 已有
 │   ├── test.vert/frag              ✅ 已有 (立方体示例)
@@ -105,6 +101,11 @@ RoamingSystem/
 │   │   ├── terrain/                ✅ 已创建 (需添加纹理)
 │   │   └── water/                  ✅ 已创建 (空)
 │   └── skybox/                     ✅ 已创建 (空)
+│
+├── scripts/                        ✅ 已创建
+│   └── package.bat                 ✅ 已完成 (打包脚本)
+│
+├── README.txt                      ✅ 已完成 (发布版使用说明)
 │
 ├── imgui/                          ✅ 第三方库
 └── AI_README/                      ✅ 开发文档
@@ -141,13 +142,17 @@ RoamingSystem/
 | **Water 类** | ✅ 已完成 | 水面网格、DuDv/Normal纹理、渲染接口 |
 | **水面着色器** | ✅ 已完成 | Fresnel效果、反射折射混合、波浪动画、高光 |
 | **水体 ImGui 面板** | ✅ 已完成 | 水面高度、波浪参数、外观调节 |
+| **性能监控面板** | ✅ 已完成 | FPS/帧时间、顶点/三角形数、GPU信息 |
+| **统一编辑器布局** | ✅ 已完成 | CollapsingHeader分组、Camera/Terrain/Water/Lighting |
+| **SceneSettings** | ✅ 已完成 | 场景参数INI保存/加载、启动自动恢复 |
+| **地面行走模式** | ✅ 已完成 | 摄像机跟随地形高度、玩家身高调节 |
+| **Release 打包** | ✅ 已完成 | Release配置、打包脚本、使用说明 |
 
 ### 待开发模块
 
 | 模块 | 状态 | 优先级 |
 |------|------|--------|
-| 光照系统完善 | ⏳ 待开发 | 中 |
-| 编辑器UI完善 | ⏳ 待开发 | 中 |
+| 光照系统完善 | ✅ 已完成 | 日夜循环 |
 | TextureArray | ⏳ 待开发 | 可选优化 |
 | LOD系统 | ⏳ 待开发 | 加分项 |
 | 视锥体剔除 | ⏳ 待开发 | 加分项 |
@@ -489,8 +494,12 @@ bool FrustumCuller::isVisible(const AABB& box) {
 | 2026-01-12 | **完成地形系统**：HeightmapLoader(高度图加载/插值)、Terrain(网格生成/渲染)、terrain.vert/frag(多纹理混合/光照)、ImGui控制面板 |
 | 2026-01-12 | **完成天空盒系统**：Cubemap(立方体贴图加载，支持posx/negx和right/left命名)、Skybox(天空盒渲染)、skybox.vert/frag着色器 |
 | 2026-01-12 | **完成水体系统**：WaterFramebuffers(反射/折射FBO)、Water(水面网格/渲染)、water.vert/frag(Fresnel/波浪/高光)、裁剪平面支持、ImGui控制面板 |
+| 2026-01-12 | **完成编辑器完善**：性能监控面板(FPS/顶点数/GPU信息)、统一主面板布局(CollapsingHeader分组)、地面行走模式 |
+| 2026-01-12 | **完成场景设置**：SceneSettings类(INI格式保存/加载)、启动自动恢复、Save/Load按钮 |
+| 2026-01-12 | **完成Release打包**：Release配置修复(包含路径/库路径)、package.bat打包脚本、README.txt使用说明 |
+| 2026-01-12 | **完成光照系统**：Lighting类(日夜循环/太阳位置/颜色计算)、动态天空颜色、terrain.frag/water.frag动态光照、ImGui时间控制面板(时间滑块/预设按钮/自动推进)、SceneSettings保存时间参数 |
 
 ---
 
-*文档版本: v1.7*
+*文档版本: v1.9*
 *最后更新: 2026-01-12*

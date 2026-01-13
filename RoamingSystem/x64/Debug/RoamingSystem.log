@@ -21,6 +21,9 @@ E:\RoamingSystem\RoamingSystem\src\Core\Camera.h(1,1): warning C4819: 该文件�
   Terrain.cpp
   Water.cpp
   WaterFramebuffers.cpp
+  SceneSettings.cpp
+  正在生成代码...
+  正在编译...
   main.cpp
 E:\RoamingSystem\RoamingSystem\src\Core\Camera.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
   (编译源文件“src/main.cpp”)

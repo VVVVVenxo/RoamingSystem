@@ -5,8 +5,12 @@ out vec4 FragColor;
 in vec3 vTexCoord;
 
 uniform samplerCube uSkybox;
+uniform vec3 uSkyColor;
+uniform float uBlendFactor;
 
 void main()
 {
-    FragColor = texture(uSkybox, vTexCoord);
+    vec4 texColor = texture(uSkybox, vTexCoord);
+    vec3 finalColor = mix(texColor.rgb, uSkyColor, uBlendFactor);
+    FragColor = vec4(finalColor, 1.0);
 }

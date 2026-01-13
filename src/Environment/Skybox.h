@@ -19,8 +19,8 @@ public:
     // Load skybox from directory containing 6 face images
     bool load(const std::string& directory, const std::string& extension = ".jpg");
 
-    // Render skybox
-    void render(const glm::mat4& view, const glm::mat4& projection);
+    void render(const glm::mat4& view, const glm::mat4& projection,
+                const glm::vec3& skyColor, float blendFactor);
 
     bool isLoaded() const { return m_cubemap.isLoaded(); }
 

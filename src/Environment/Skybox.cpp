@@ -112,39 +112,33 @@ bool Skybox::load(const std::string& directory, const std::string& extension)
     return true;
 }
 
-void Skybox::render(const glm::mat4& view, const glm::mat4& projection)
+void Skybox::render(const glm::mat4& view, const glm::mat4& projection,
+                    const glm::vec3& skyColor, float blendFactor)
 {
     if (!m_cubemap.isLoaded())
     {
         return;
     }
 
-    // Save current depth function
     GLint oldDepthFunc;
     glGetIntegerv(GL_DEPTH_FUNC, &oldDepthFunc);
-
-    // Change depth function so depth test passes when values are equal to depth buffer's content
     glDepthFunc(GL_LEQUAL);
 
     m_shader.use();
 
-    // Remove translation from view matrix
     glm::mat4 viewNoTranslation = glm::mat4(glm::mat3(view));
     m_shader.setMat4("uView", viewNoTranslation);
     m_shader.setMat4("uProjection", projection);
-    
-    // Set clip plane to always pass for skybox rendering
     m_shader.setVec4("uClipPlane", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+    m_shader.setVec3("uSkyColor", skyColor);
+    m_shader.setFloat("uBlendFactor", blendFactor);
 
-    // Bind cubemap
     m_cubemap.bind(0);
     m_shader.setInt("uSkybox", 0);
 
-    // Draw skybox cube
     glBindVertexArray(m_vao);
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
 
-    // Restore depth function
     glDepthFunc(oldDepthFunc);
 }

@@ -74,6 +74,10 @@
     <IncludePath>E:\LearnsOpenGL\OpenGL\includes;$(IncludePath)</IncludePath>
     <LibraryPath>E:\LearnsOpenGL\OpenGL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>E:\LearnsOpenGL\OpenGL\includes;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\LearnsOpenGL\OpenGL\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -122,10 +126,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)imgui;E:\LearnsOpenGL\OpenGL\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -143,12 +149,14 @@
     <ClCompile Include="src\Core\Mesh.cpp" />
     <ClCompile Include="src\Core\Cubemap.cpp" />
     <ClCompile Include="src\Environment\Skybox.cpp" />
+    <ClCompile Include="src\Environment\Lighting.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\RoamingApp.cpp" />
     <ClCompile Include="src\Terrain\HeightmapLoader.cpp" />
     <ClCompile Include="src\Terrain\Terrain.cpp" />
     <ClCompile Include="src\Water\Water.cpp" />
     <ClCompile Include="src\Water\WaterFramebuffers.cpp" />
+    <ClCompile Include="src\Editor\SceneSettings.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -167,12 +175,14 @@
     <ClInclude Include="src\Core\Mesh.h" />
     <ClInclude Include="src\Core\Cubemap.h" />
     <ClInclude Include="src\Environment\Skybox.h" />
+    <ClInclude Include="src\Environment\Lighting.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\RoamingApp.h" />
     <ClInclude Include="src\Terrain\HeightmapLoader.h" />
     <ClInclude Include="src\Terrain\Terrain.h" />
     <ClInclude Include="src\Water\Water.h" />
     <ClInclude Include="src\Water\WaterFramebuffers.h" />
+    <ClInclude Include="src\Editor\SceneSettings.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\test.frag" />

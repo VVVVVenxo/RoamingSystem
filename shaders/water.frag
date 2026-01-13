@@ -19,6 +19,8 @@ uniform float uWaveStrength;
 uniform float uShineDamper;
 uniform float uReflectivity;
 uniform vec3 uWaterColor;
+uniform vec3 uLightColor;       // Sun color for specular
+uniform float uLightIntensity;  // Sun intensity
 uniform bool uUseTextures;
 
 const float waveSpeed = 0.03;
@@ -81,11 +83,11 @@ void main()
     refractiveFactor = pow(refractiveFactor, 0.5);
     refractiveFactor = clamp(refractiveFactor, 0.0, 1.0);
     
-    // Specular highlights
+    // Specular highlights with dynamic sun color
     vec3 reflectedLight = reflect(normalize(vFromLight), normal);
     float specular = max(dot(reflectedLight, viewVector), 0.0);
     specular = pow(specular, uShineDamper);
-    vec3 specularHighlights = vec3(1.0, 1.0, 0.9) * specular * uReflectivity;
+    vec3 specularHighlights = uLightColor * specular * uReflectivity * uLightIntensity;
     
     // Mix reflection and refraction based on Fresnel
     FragColor = mix(reflectColor, refractColor, refractiveFactor);

@@ -98,7 +98,8 @@ void Water::setupMesh()
 }
 
 void Water::render(const glm::mat4& view, const glm::mat4& projection,
-                   const glm::vec3& cameraPos, const glm::vec3& lightDir, float time,
+                   const glm::vec3& cameraPos, const glm::vec3& lightDir, 
+                   const glm::vec3& lightColor, float lightIntensity, float time,
                    unsigned int reflectionTex, unsigned int refractionTex,
                    unsigned int depthTex)
 {
@@ -122,6 +123,8 @@ void Water::render(const glm::mat4& view, const glm::mat4& projection,
     // Camera and light
     m_shader.setVec3("uCameraPos", cameraPos);
     m_shader.setVec3("uLightDir", lightDir);
+    m_shader.setVec3("uLightColor", lightColor);
+    m_shader.setFloat("uLightIntensity", lightIntensity);
 
     // Water parameters
     m_shader.setFloat("uTime", time);

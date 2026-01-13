@@ -8,8 +8,10 @@
 #include "Core/Mesh.h"
 #include "Terrain/Terrain.h"
 #include "Environment/Skybox.h"
+#include "Environment/Lighting.h"
 #include "Water/Water.h"
 #include "Water/WaterFramebuffers.h"
+#include "Editor/SceneSettings.h"
 
 class RoamingApp : public Application
 {
@@ -27,11 +29,18 @@ protected:
 private:
     void processInput(float deltaTime);
     void renderScene(const glm::mat4& view, const glm::mat4& projection, const glm::vec4& clipPlane);
+    void saveSettings();
+    void loadSettings();
+    void applySettings(const SceneSettings& settings);
+    SceneSettings gatherSettings();
 
     Camera m_camera;
     
     // Skybox
     Skybox m_skybox;
+    
+    // Lighting
+    Lighting m_lighting;
     
     // Terrain
     Terrain m_terrain;

@@ -16,7 +16,8 @@ public:
 
     // Render water surface
     void render(const glm::mat4& view, const glm::mat4& projection,
-                const glm::vec3& cameraPos, const glm::vec3& lightDir, float time,
+                const glm::vec3& cameraPos, const glm::vec3& lightDir, 
+                const glm::vec3& lightColor, float lightIntensity, float time,
                 unsigned int reflectionTex, unsigned int refractionTex,
                 unsigned int depthTex);
 

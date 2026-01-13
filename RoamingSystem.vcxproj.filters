@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="源文件">
@@ -63,6 +63,9 @@
     <ClCompile Include="src\Environment\Skybox.cpp">
       <Filter>src\Environment</Filter>
     </ClCompile>
+    <ClCompile Include="src\Environment\Lighting.cpp">
+      <Filter>src\Environment</Filter>
+    </ClCompile>
     <ClCompile Include="src\Application.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -80,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="src\Water\WaterFramebuffers.cpp">
       <Filter>src\Water</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\SceneSettings.cpp">
+      <Filter>src\Editor</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui.cpp">
       <Filter>imgui</Filter>
@@ -149,6 +155,9 @@
     <ClInclude Include="src\Environment\Skybox.h">
       <Filter>src\Environment</Filter>
     </ClInclude>
+    <ClInclude Include="src\Environment\Lighting.h">
+      <Filter>src\Environment</Filter>
+    </ClInclude>
     <ClInclude Include="src\Application.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -166,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="src\Water\WaterFramebuffers.h">
       <Filter>src\Water</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\SceneSettings.h">
+      <Filter>src\Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

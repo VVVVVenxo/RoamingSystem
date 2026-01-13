@@ -27,6 +27,9 @@ RoamingApp::RoamingApp()
 
 void RoamingApp::onInit()
 {
+    // Try to load saved settings
+    loadSettings();
+    
     // Load skybox
     m_skybox.load("assets/skybox");
     
@@ -110,6 +113,23 @@ void RoamingApp::onUpdate(float deltaTime)
 {
     m_time += deltaTime;
     processInput(deltaTime);
+    
+    // Update lighting (for day/night cycle)
+    m_lighting.update(deltaTime);
+    
+    // Update sky color based on time of day
+    glm::vec3 skyColor = m_lighting.getSkyColor();
+    setClearColor(glm::vec4(skyColor, 1.0f));
+    
+    // Update light direction from lighting system
+    m_lightDir = -m_lighting.getSunDirection();
+    
+    // Ground walk mode: constrain camera to terrain surface
+    if (m_groundWalkMode && m_terrain.isGenerated())
+    {
+        float terrainHeight = m_terrain.getHeightAt(m_camera.Position.x, m_camera.Position.z);
+        m_camera.Position.y = terrainHeight + m_playerHeight;
+    }
 }
 
 void RoamingApp::processInput(float deltaTime)
@@ -179,14 +199,15 @@ void RoamingApp::renderScene(const glm::mat4& view, const glm::mat4& projection,
 {
     glm::mat4 model = glm::mat4(1.0f);
 
-    // Render skybox first (with depth write disabled)
+    // Render skybox
     if (m_skybox.isLoaded())
     {
         glDepthMask(GL_FALSE);
-        // Set clip plane for skybox
-        // Note: Skybox shader needs to support clip plane
-        m_skybox.render(view, projection);
+        float sunHeight = m_lighting.getSunDirection().y;
+        float blendFactor = (sunHeight < 0.3f) ? 0.5f * (1.0f - sunHeight / 0.3f) : 0.0f;
+        m_skybox.render(view, projection, m_lighting.getSkyColor(), blendFactor);
         glDepthMask(GL_TRUE);
+        m_drawCalls++;
     }
 
     // Set wireframe mode for terrain
@@ -217,6 +238,11 @@ void RoamingApp::renderScene(const glm::mat4& view, const glm::mat4& projection,
         m_terrainShader.setFloat("uSlopeThreshold", m_slopeThreshold);
         m_terrainShader.setBool("uUseTextures", m_useTerrainTextures);
         
+        // Dynamic lighting parameters
+        m_terrainShader.setVec3("uLightColor", m_lighting.getSunColor());
+        m_terrainShader.setVec3("uAmbientColor", m_lighting.getAmbientColor());
+        m_terrainShader.setFloat("uLightIntensity", m_lighting.getSunIntensity());
+        
         // Bind textures if available
         if (m_useTerrainTextures)
         {
@@ -229,6 +255,7 @@ void RoamingApp::renderScene(const glm::mat4& view, const glm::mat4& projection,
         }
         
         m_terrain.render(m_terrainShader);
+        m_drawCalls++;
     }
 
     // Render reference cube
@@ -246,6 +273,7 @@ void RoamingApp::renderScene(const glm::mat4& view, const glm::mat4& projection,
         m_cubeShader.setBool("uUseTexture", false);
         
         m_cubeMesh.draw();
+        m_drawCalls++;
     }
 
     // Reset polygon mode
@@ -254,6 +282,9 @@ void RoamingApp::renderScene(const glm::mat4& view, const glm::mat4& projection,
 
 void RoamingApp::onRender()
 {
+    // Reset draw call counter
+    m_drawCalls = 0;
+    
     glm::mat4 projection = glm::perspective(
         glm::radians(m_camera.Zoom),
         getAspectRatio(),
@@ -303,106 +334,267 @@ void RoamingApp::onRender()
     // 4. Render water surface
     if (m_enableWater && m_water.isInitialized())
     {
-        m_water.render(view, projection, m_camera.Position, m_lightDir, m_time,
+        m_water.render(view, projection, m_camera.Position, m_lightDir,
+                       m_lighting.getSunColor(), m_lighting.getSunIntensity(), m_time,
                        m_waterFBOs.getReflectionTexture(),
                        m_waterFBOs.getRefractionTexture(),
                        m_waterFBOs.getRefractionDepthTexture());
+        m_drawCalls++;
     }
 }
 
 void RoamingApp::onImGui()
 {
-    // Engine Stats
-    ImGui::Begin("Engine Stats");
-    ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-    ImGui::Text("Camera Pos: (%.1f, %.1f, %.1f)", 
-        m_camera.Position.x, m_camera.Position.y, m_camera.Position.z);
+    float fps = ImGui::GetIO().Framerate;
+    
+    // Performance Panel
+    ImGui::Begin("Performance");
+    ImGui::Text("FPS: %.1f (%.2f ms)", fps, 1000.0f / fps);
+    ImGui::Separator();
     
     if (m_terrain.isGenerated())
     {
-        float terrainHeight = m_terrain.getHeightAt(m_camera.Position.x, m_camera.Position.z);
-        ImGui::Text("Terrain Height: %.2f", terrainHeight);
-        ImGui::Text("Height Above Terrain: %.2f", m_camera.Position.y - terrainHeight);
+        ImGui::Text("Vertices: %d", m_terrain.getVertexCount());
+        ImGui::Text("Triangles: %d", m_terrain.getTriangleCount());
     }
+    ImGui::Text("Draw Calls: %d", m_drawCalls);
     
     ImGui::Separator();
-    ImGui::Text("Controls:");
+    ImGui::Text("OpenGL: %s", glGetString(GL_VERSION));
+    ImGui::Text("GPU: %s", glGetString(GL_RENDERER));
+    ImGui::End();
+
+    // Main Scene Editor Panel
+    ImGui::Begin("Scene Editor");
+    
+    // Camera Section
+    if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        ImGui::Text("Position: (%.1f, %.1f, %.1f)", 
+            m_camera.Position.x, m_camera.Position.y, m_camera.Position.z);
+        
+        if (m_terrain.isGenerated())
+        {
+            float terrainHeight = m_terrain.getHeightAt(m_camera.Position.x, m_camera.Position.z);
+            ImGui::Text("Terrain Height: %.2f", terrainHeight);
+            ImGui::Text("Height Above Terrain: %.2f", m_camera.Position.y - terrainHeight);
+        }
+        
+        ImGui::Checkbox("Ground Walk Mode", &m_groundWalkMode);
+        if (m_groundWalkMode)
+        {
+            ImGui::SliderFloat("Player Height", &m_playerHeight, 0.5f, 5.0f);
+        }
+        ImGui::SliderFloat("Move Speed", &m_camera.MovementSpeed, 1.0f, 50.0f);
+        ImGui::SliderFloat("Mouse Sensitivity", &m_camera.MouseSensitivity, 0.01f, 0.5f);
+    }
+    
+    // Terrain Section
+    if (ImGui::CollapsingHeader("Terrain", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        if (m_terrain.isGenerated())
+        {
+            ImGui::Text("Grid: %dx%d", m_terrain.getGridWidth(), m_terrain.getGridHeight());
+            ImGui::Text("World Size: %.0f x %.0f", m_terrain.getSize(), m_terrain.getSize());
+            
+            ImGui::Checkbox("Wireframe Mode", &m_wireframeMode);
+            ImGui::Checkbox("Show Reference Cube", &m_showCube);
+            
+            ImGui::Separator();
+            ImGui::Text("Texturing");
+            ImGui::SliderFloat("Texture Tiling", &m_textureTiling, 1.0f, 128.0f);
+            ImGui::Checkbox("Use Textures", &m_useTerrainTextures);
+            
+            ImGui::Separator();
+            ImGui::Text("Height Blending");
+            ImGui::SliderFloat("Grass Max", &m_grassMaxHeight, 0.0f, 1.0f);
+            ImGui::SliderFloat("Rock Max", &m_rockMaxHeight, 0.0f, 1.0f);
+            ImGui::SliderFloat("Slope Threshold", &m_slopeThreshold, 0.0f, 1.0f);
+        }
+        else
+        {
+            ImGui::TextColored(ImVec4(1.0f, 0.5f, 0.0f, 1.0f), "No terrain loaded!");
+            ImGui::Text("Add heightmap to:");
+            ImGui::BulletText("assets/heightmaps/heightmap.png");
+        }
+    }
+    
+    // Water Section
+    if (ImGui::CollapsingHeader("Water"))
+    {
+        ImGui::Checkbox("Enable Water", &m_enableWater);
+        
+        if (m_water.isInitialized() && m_enableWater)
+        {
+            ImGui::SliderFloat("Water Height", &m_waterHeight, 0.0f, m_terrainMaxHeight);
+            m_water.setHeight(m_waterHeight);
+            
+            ImGui::Separator();
+            ImGui::Text("Waves");
+            ImGui::SliderFloat("Wave Speed", &m_water.m_waveSpeed, 0.0f, 0.2f);
+            ImGui::SliderFloat("Wave Strength", &m_water.m_waveStrength, 0.0f, 0.1f);
+            ImGui::SliderFloat("Tiling", &m_water.m_tiling, 1.0f, 20.0f);
+            
+            ImGui::Separator();
+            ImGui::Text("Appearance");
+            ImGui::SliderFloat("Shine Damper", &m_water.m_shineDamper, 1.0f, 100.0f);
+            ImGui::SliderFloat("Reflectivity", &m_water.m_reflectivity, 0.0f, 1.0f);
+            ImGui::ColorEdit3("Color", &m_water.m_waterColor.x);
+        }
+    }
+    
+    // Lighting Section
+    if (ImGui::CollapsingHeader("Lighting", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        // Time of day control
+        ImGui::Text("Day/Night Cycle");
+        ImGui::SliderFloat("Time of Day", &m_lighting.m_timeOfDay, 0.0f, 24.0f, "%.1f h");
+        
+        // Time presets
+        if (ImGui::Button("Dawn")) m_lighting.m_timeOfDay = 6.0f;
+        ImGui::SameLine();
+        if (ImGui::Button("Noon")) m_lighting.m_timeOfDay = 12.0f;
+        ImGui::SameLine();
+        if (ImGui::Button("Dusk")) m_lighting.m_timeOfDay = 18.0f;
+        ImGui::SameLine();
+        if (ImGui::Button("Night")) m_lighting.m_timeOfDay = 0.0f;
+        
+        // Auto time advance
+        ImGui::Checkbox("Auto Advance", &m_lighting.m_autoAdvance);
+        if (m_lighting.m_autoAdvance)
+        {
+            ImGui::SliderFloat("Day Speed", &m_lighting.m_daySpeed, 0.01f, 2.0f, "%.2f h/s");
+        }
+        
+        // Display sun info
+        ImGui::Separator();
+        glm::vec3 sunDir = m_lighting.getSunDirection();
+        ImGui::Text("Sun Height: %.2f", sunDir.y);
+        ImGui::Text("Sun Intensity: %.2f", m_lighting.getSunIntensity());
+        
+        glm::vec3 sunColor = m_lighting.getSunColor();
+        ImGui::ColorEdit3("Sun Color", &sunColor.x, ImGuiColorEditFlags_NoInputs);
+    }
+    
+    // Settings buttons
+    ImGui::Separator();
+    if (ImGui::Button("Save Settings"))
+    {
+        saveSettings();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Load Settings"))
+    {
+        loadSettings();
+    }
+    
+    ImGui::End();
+
+    // Help Panel (collapsed by default)
+    ImGui::Begin("Controls");
     ImGui::BulletText("WASD - Move");
     ImGui::BulletText("SHIFT - Sprint");
-    ImGui::BulletText("SPACE - Toggle Mouse");
-    ImGui::BulletText("F1 - Toggle Wireframe");
+    ImGui::BulletText("Mouse - Look around");
+    ImGui::BulletText("Scroll - Zoom");
+    ImGui::BulletText("SPACE - Toggle cursor");
+    ImGui::BulletText("F1 - Toggle wireframe");
+    ImGui::BulletText("ESC - Exit");
     ImGui::End();
+}
 
-    // Terrain Settings
-    ImGui::Begin("Terrain Settings");
-    
-    if (m_terrain.isGenerated())
-    {
-        ImGui::Text("Grid: %dx%d", m_terrain.getGridWidth(), m_terrain.getGridHeight());
-        ImGui::Text("World Size: %.0f x %.0f", m_terrain.getSize(), m_terrain.getSize());
-        
-        ImGui::Separator();
-        ImGui::Text("Rendering");
-        ImGui::Checkbox("Wireframe Mode", &m_wireframeMode);
-        ImGui::Checkbox("Show Reference Cube", &m_showCube);
-        
-        ImGui::Separator();
-        ImGui::Text("Texturing");
-        ImGui::SliderFloat("Texture Tiling", &m_textureTiling, 1.0f, 128.0f);
-        ImGui::Checkbox("Use Textures", &m_useTerrainTextures);
-        
-        ImGui::Separator();
-        ImGui::Text("Height-based Blending");
-        ImGui::SliderFloat("Grass Max Height", &m_grassMaxHeight, 0.0f, 1.0f);
-        ImGui::SliderFloat("Rock Max Height", &m_rockMaxHeight, 0.0f, 1.0f);
-        ImGui::SliderFloat("Slope Threshold", &m_slopeThreshold, 0.0f, 1.0f);
-        
-        ImGui::Separator();
-        ImGui::Text("Lighting");
-        ImGui::SliderFloat3("Light Dir", &m_lightDir.x, -1.0f, 1.0f);
-    }
-    else
-    {
-        ImGui::TextColored(ImVec4(1.0f, 0.5f, 0.0f, 1.0f), "No terrain loaded!");
-        ImGui::Text("Add heightmap to:");
-        ImGui::BulletText("assets/heightmaps/heightmap.png");
-    }
-    
-    ImGui::Separator();
-    glm::vec4 clearColor = getClearColor();
-    if (ImGui::ColorEdit3("Sky Color", &clearColor.x))
-    {
-        setClearColor(clearColor);
-    }
-    
-    ImGui::End();
+void RoamingApp::saveSettings()
+{
+    SceneSettings settings = gatherSettings();
+    SceneSettingsManager::save(settings, SceneSettingsManager::getDefaultPath());
+}
 
-    // Water Settings
-    ImGui::Begin("Water Settings");
-    
-    ImGui::Checkbox("Enable Water", &m_enableWater);
-    
-    if (m_water.isInitialized())
+void RoamingApp::loadSettings()
+{
+    SceneSettings settings;
+    if (SceneSettingsManager::load(settings, SceneSettingsManager::getDefaultPath()))
     {
-        ImGui::SliderFloat("Water Height", &m_waterHeight, 0.0f, m_terrainMaxHeight);
-        m_water.setHeight(m_waterHeight);
-        
-        ImGui::Separator();
-        ImGui::Text("Wave Parameters");
-        ImGui::SliderFloat("Wave Speed", &m_water.m_waveSpeed, 0.0f, 0.2f);
-        ImGui::SliderFloat("Wave Strength", &m_water.m_waveStrength, 0.0f, 0.1f);
-        ImGui::SliderFloat("Tiling", &m_water.m_tiling, 1.0f, 20.0f);
-        
-        ImGui::Separator();
-        ImGui::Text("Appearance");
-        ImGui::SliderFloat("Shine Damper", &m_water.m_shineDamper, 1.0f, 100.0f);
-        ImGui::SliderFloat("Reflectivity", &m_water.m_reflectivity, 0.0f, 1.0f);
-        ImGui::ColorEdit3("Water Color", &m_water.m_waterColor.x);
+        applySettings(settings);
     }
-    else
-    {
-        ImGui::TextColored(ImVec4(1.0f, 0.5f, 0.0f, 1.0f), "Water not initialized!");
-    }
+}
+
+SceneSettings RoamingApp::gatherSettings()
+{
+    SceneSettings settings;
     
-    ImGui::End();
+    // Terrain
+    settings.textureTiling = m_textureTiling;
+    settings.grassMaxHeight = m_grassMaxHeight;
+    settings.rockMaxHeight = m_rockMaxHeight;
+    settings.slopeThreshold = m_slopeThreshold;
+    settings.useTerrainTextures = m_useTerrainTextures;
+    
+    // Water
+    settings.waterHeight = m_waterHeight;
+    settings.waveSpeed = m_water.m_waveSpeed;
+    settings.waveStrength = m_water.m_waveStrength;
+    settings.waterTiling = m_water.m_tiling;
+    settings.shineDamper = m_water.m_shineDamper;
+    settings.reflectivity = m_water.m_reflectivity;
+    settings.waterColor = m_water.m_waterColor;
+    settings.enableWater = m_enableWater;
+    
+    // Lighting
+    settings.timeOfDay = m_lighting.m_timeOfDay;
+    settings.daySpeed = m_lighting.m_daySpeed;
+    settings.autoAdvance = m_lighting.m_autoAdvance;
+    
+    // Camera
+    settings.cameraPos = m_camera.Position;
+    settings.cameraYaw = m_camera.Yaw;
+    settings.cameraPitch = m_camera.Pitch;
+    settings.moveSpeed = m_camera.MovementSpeed;
+    settings.mouseSensitivity = m_camera.MouseSensitivity;
+    settings.groundWalkMode = m_groundWalkMode;
+    settings.playerHeight = m_playerHeight;
+    
+    // Display
+    settings.wireframeMode = m_wireframeMode;
+    settings.showCube = m_showCube;
+    
+    return settings;
+}
+
+void RoamingApp::applySettings(const SceneSettings& settings)
+{
+    // Terrain
+    m_textureTiling = settings.textureTiling;
+    m_grassMaxHeight = settings.grassMaxHeight;
+    m_rockMaxHeight = settings.rockMaxHeight;
+    m_slopeThreshold = settings.slopeThreshold;
+    m_useTerrainTextures = settings.useTerrainTextures;
+    
+    // Water
+    m_waterHeight = settings.waterHeight;
+    m_water.setHeight(m_waterHeight);
+    m_water.m_waveSpeed = settings.waveSpeed;
+    m_water.m_waveStrength = settings.waveStrength;
+    m_water.m_tiling = settings.waterTiling;
+    m_water.m_shineDamper = settings.shineDamper;
+    m_water.m_reflectivity = settings.reflectivity;
+    m_water.m_waterColor = settings.waterColor;
+    m_enableWater = settings.enableWater;
+    
+    // Lighting
+    m_lighting.m_timeOfDay = settings.timeOfDay;
+    m_lighting.m_daySpeed = settings.daySpeed;
+    m_lighting.m_autoAdvance = settings.autoAdvance;
+    
+    // Camera
+    m_camera.Position = settings.cameraPos;
+    m_camera.Yaw = settings.cameraYaw;
+    m_camera.Pitch = settings.cameraPitch;
+    m_camera.MovementSpeed = settings.moveSpeed;
+    m_camera.MouseSensitivity = settings.mouseSensitivity;
+    m_camera.updateCameraVectors();
+    m_groundWalkMode = settings.groundWalkMode;
+    m_playerHeight = settings.playerHeight;
+    
+    // Display
+    m_wireframeMode = settings.wireframeMode;
+    m_showCube = settings.showCube;
 }
