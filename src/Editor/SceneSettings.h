@@ -33,6 +33,13 @@ struct SceneSettings
     bool enableFog = true;
     float fogDensity = 0.003f;
     
+    // SSAO
+    bool enableSSAO = true;
+    float ssaoRadius = 0.5f;
+    float ssaoBias = 0.025f;
+    float ssaoIntensity = 1.0f;
+    int ssaoKernelSize = 32;
+    
     // Camera
     glm::vec3 cameraPos = glm::vec3(0.0f, 30.0f, 50.0f);
     float cameraYaw = -90.0f;

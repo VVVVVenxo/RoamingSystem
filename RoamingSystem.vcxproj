@@ -151,6 +151,7 @@
     <ClCompile Include="src\Environment\Skybox.cpp" />
     <ClCompile Include="src\Environment\Lighting.cpp" />
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\PostProcess\SSAO.cpp" />
     <ClCompile Include="src\RoamingApp.cpp" />
     <ClCompile Include="src\Terrain\HeightmapLoader.cpp" />
     <ClCompile Include="src\Terrain\Frustum.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="src\Environment\Skybox.h" />
     <ClInclude Include="src\Environment\Lighting.h" />
     <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\PostProcess\SSAO.h" />
     <ClInclude Include="src\RoamingApp.h" />
     <ClInclude Include="src\Terrain\HeightmapLoader.h" />
     <ClInclude Include="src\Terrain\Frustum.h" />

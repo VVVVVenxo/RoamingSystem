@@ -13,6 +13,8 @@ RoamingApp::RoamingApp()
     , m_rockMaxHeight(0.7f)
     , m_slopeThreshold(0.4f)
     , m_useTerrainTextures(false)
+    , m_useNormalMaps(false)
+    , m_normalMapStrength(1.0f)
     , m_wireframeMode(false)
     , m_waterHeight(10.0f)
     , m_enableWater(true)
@@ -21,6 +23,11 @@ RoamingApp::RoamingApp()
     , m_playerHeight(1.8f)
     , m_enableFog(true)
     , m_fogDensity(0.003f)
+    , m_enableSSAO(true)
+    , m_ssaoRadius(0.5f)
+    , m_ssaoBias(0.025f)
+    , m_ssaoIntensity(1.0f)
+    , m_ssaoKernelSize(32)
     , m_drawCalls(0)
     , m_showCube(false)
 {
@@ -54,11 +61,23 @@ void RoamingApp::onInit()
     {
         m_rockTexture.load("assets/textures/terrain/Rocks001_1K-PNG_Color.png");
         m_snowTexture.load("assets/textures/terrain/Snow010A_1K-PNG_Color.png");
+        
+        // Load normal maps
+        m_useNormalMaps = m_grassNormalMap.load("assets/textures/terrain/Ground037_1K-PNG_NormalGL.png");
+        if (m_useNormalMaps)
+        {
+            m_rockNormalMap.load("assets/textures/terrain/Rocks001_1K-PNG_NormalGL.png");
+            m_snowNormalMap.load("assets/textures/terrain/Snow010A_1K-PNG_NormalGL.png");
+        }
     }
 
     // Initialize water system
     m_waterFBOs.init(320, 180, getWidth(), getHeight());
     m_water.init(m_terrainSize, m_waterHeight);
+    
+    // Initialize SSAO
+    m_ssao.init(getWidth(), getHeight());
+    m_gbufferShader.load("shaders/gbuffer.vert", "shaders/gbuffer.frag");
 
     // Load cube shader and mesh for reference
     m_cubeShader.load("shaders/test.vert", "shaders/test.frag");
@@ -251,6 +270,16 @@ void RoamingApp::renderScene(const glm::mat4& view, const glm::mat4& projection,
         m_terrainShader.setFloat("uFogDensity", m_fogDensity);
         m_terrainShader.setBool("uFogEnabled", m_enableFog);
         
+        // SSAO parameters
+        m_terrainShader.setBool("uSSAOEnabled", m_enableSSAO && m_ssao.isInitialized());
+        m_terrainShader.setFloat("uSSAOIntensity", m_ssaoIntensity);
+        if (m_enableSSAO && m_ssao.isInitialized())
+        {
+            glActiveTexture(GL_TEXTURE6);
+            glBindTexture(GL_TEXTURE_2D, m_ssao.getSSAOTexture());
+            m_terrainShader.setInt("uSSAOTexture", 6);
+        }
+        
         // Bind textures if available
         if (m_useTerrainTextures)
         {
@@ -260,6 +289,23 @@ void RoamingApp::renderScene(const glm::mat4& view, const glm::mat4& projection,
             m_terrainShader.setInt("uRockTexture", 1);
             m_snowTexture.bind(2);
             m_terrainShader.setInt("uSnowTexture", 2);
+            
+            // Bind normal maps
+            m_terrainShader.setBool("uUseNormalMaps", m_useNormalMaps);
+            m_terrainShader.setFloat("uNormalMapStrength", m_normalMapStrength);
+            if (m_useNormalMaps)
+            {
+                m_grassNormalMap.bind(3);
+                m_terrainShader.setInt("uGrassNormalMap", 3);
+                m_rockNormalMap.bind(4);
+                m_terrainShader.setInt("uRockNormalMap", 4);
+                m_snowNormalMap.bind(5);
+                m_terrainShader.setInt("uSnowNormalMap", 5);
+            }
+        }
+        else
+        {
+            m_terrainShader.setBool("uUseNormalMaps", false);
         }
         
         glm::mat4 vp = projection * view;
@@ -301,6 +347,42 @@ void RoamingApp::onRender()
         1000.0f
     );
     glm::mat4 view = m_camera.GetViewMatrix();
+
+    // SSAO Pass: Render G-Buffer and calculate SSAO
+    if (m_enableSSAO && m_ssao.isInitialized())
+    {
+        // Update SSAO parameters
+        m_ssao.m_enabled = m_enableSSAO;
+        m_ssao.m_radius = m_ssaoRadius;
+        m_ssao.m_bias = m_ssaoBias;
+        m_ssao.m_intensity = m_ssaoIntensity;
+        m_ssao.m_kernelSize = m_ssaoKernelSize;
+        
+        // 1. Render scene to G-Buffer
+        m_ssao.bindGBuffer();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+        // Render terrain to G-Buffer
+        if (m_terrain.isGenerated())
+        {
+            glm::mat4 model = glm::mat4(1.0f);
+            m_gbufferShader.use();
+            m_gbufferShader.setMat4("uProjection", projection);
+            m_gbufferShader.setMat4("uView", view);
+            m_gbufferShader.setMat4("uModel", model);
+            
+            glm::mat4 vp = projection * view;
+            m_terrain.render(m_gbufferShader, m_camera.Position, vp);
+        }
+        
+        // 2. Calculate SSAO
+        m_ssao.renderSSAO(projection, view);
+        
+        // 3. Blur SSAO
+        m_ssao.renderBlur();
+        
+        m_ssao.unbind(getWidth(), getHeight());
+    }
 
     if (m_enableWater && m_water.isInitialized())
     {
@@ -416,6 +498,14 @@ void RoamingApp::onImGui()
             ImGui::Text("Texturing");
             ImGui::SliderFloat("Texture Tiling", &m_textureTiling, 1.0f, 128.0f);
             ImGui::Checkbox("Use Textures", &m_useTerrainTextures);
+            if (m_useTerrainTextures)
+            {
+                ImGui::Checkbox("Use Normal Maps", &m_useNormalMaps);
+                if (m_useNormalMaps)
+                {
+                    ImGui::SliderFloat("Normal Strength", &m_normalMapStrength, 0.0f, 2.0f);
+                }
+            }
             
             ImGui::Separator();
             ImGui::Text("Height Blending");
@@ -465,6 +555,16 @@ void RoamingApp::onImGui()
             ImGui::SliderFloat("Shine Damper", &m_water.m_shineDamper, 1.0f, 100.0f);
             ImGui::SliderFloat("Reflectivity", &m_water.m_reflectivity, 0.0f, 1.0f);
             ImGui::ColorEdit3("Color", &m_water.m_waterColor.x);
+            
+            ImGui::Separator();
+            ImGui::Text("Shore Foam");
+            ImGui::Checkbox("Enable Foam", &m_water.m_foamEnabled);
+            if (m_water.m_foamEnabled)
+            {
+                ImGui::SliderFloat("Foam Depth", &m_water.m_foamDepth, 0.5f, 10.0f);
+                ImGui::SliderFloat("Foam Intensity", &m_water.m_foamIntensity, 0.0f, 1.0f);
+                ImGui::ColorEdit3("Foam Color", &m_water.m_foamColor.x);
+            }
         }
     }
     
@@ -513,6 +613,24 @@ void RoamingApp::onImGui()
             glm::vec3 fogColor = m_lighting.getFogColor();
             ImGui::ColorEdit3("Fog Color", &fogColor.x, ImGuiColorEditFlags_NoInputs);
             ImGui::Text("(Color follows time of day)");
+        }
+    }
+    
+    // SSAO Section
+    if (ImGui::CollapsingHeader("SSAO"))
+    {
+        ImGui::Checkbox("Enable SSAO", &m_enableSSAO);
+        
+        if (m_enableSSAO && m_ssao.isInitialized())
+        {
+            ImGui::SliderFloat("Radius", &m_ssaoRadius, 0.1f, 2.0f);
+            ImGui::SliderFloat("Bias", &m_ssaoBias, 0.0f, 0.1f, "%.4f");
+            ImGui::SliderFloat("Intensity", &m_ssaoIntensity, 0.0f, 2.0f);
+            ImGui::SliderInt("Kernel Size", &m_ssaoKernelSize, 8, 64);
+        }
+        else if (!m_ssao.isInitialized())
+        {
+            ImGui::TextColored(ImVec4(1.0f, 0.5f, 0.0f, 1.0f), "SSAO not initialized");
         }
     }
     
@@ -587,6 +705,13 @@ SceneSettings RoamingApp::gatherSettings()
     settings.enableFog = m_enableFog;
     settings.fogDensity = m_fogDensity;
     
+    // SSAO
+    settings.enableSSAO = m_enableSSAO;
+    settings.ssaoRadius = m_ssaoRadius;
+    settings.ssaoBias = m_ssaoBias;
+    settings.ssaoIntensity = m_ssaoIntensity;
+    settings.ssaoKernelSize = m_ssaoKernelSize;
+    
     // Camera
     settings.cameraPos = m_camera.Position;
     settings.cameraYaw = m_camera.Yaw;
@@ -631,6 +756,13 @@ void RoamingApp::applySettings(const SceneSettings& settings)
     // Fog
     m_enableFog = settings.enableFog;
     m_fogDensity = settings.fogDensity;
+    
+    // SSAO
+    m_enableSSAO = settings.enableSSAO;
+    m_ssaoRadius = settings.ssaoRadius;
+    m_ssaoBias = settings.ssaoBias;
+    m_ssaoIntensity = settings.ssaoIntensity;
+    m_ssaoKernelSize = settings.ssaoKernelSize;
     
     // Camera
     m_camera.Position = settings.cameraPos;

@@ -71,6 +71,16 @@ VertexLayout VertexLayout::positionNormalTexture()
     return layout;
 }
 
+VertexLayout VertexLayout::positionNormalTextureTangent()
+{
+    VertexLayout layout;
+    layout.add(0, 3, VertexAttribType::Float); // position
+    layout.add(1, 3, VertexAttribType::Float); // normal
+    layout.add(2, 2, VertexAttribType::Float); // texcoord
+    layout.add(3, 3, VertexAttribType::Float); // tangent
+    return layout;
+}
+
 // ============================================
 // Mesh Implementation
 // ============================================

@@ -41,6 +41,7 @@ public:
     static VertexLayout positionTexture();
     static VertexLayout positionColorTexture();
     static VertexLayout positionNormalTexture();
+    static VertexLayout positionNormalTextureTangent();
 
 private:
     std::vector<VertexAttrib> m_attribs;

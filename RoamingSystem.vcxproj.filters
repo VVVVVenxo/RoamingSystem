@@ -37,6 +37,9 @@
     <Filter Include="src\Editor">
       <UniqueIdentifier>{f6a7b8c9-d0e1-2345-fabc-456789012345}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\PostProcess">
+      <UniqueIdentifier>{61d0c4dd-cef1-4272-a865-6d7b3e4fda27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -117,6 +120,9 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
+    <ClCompile Include="src\PostProcess\SSAO.cpp">
+      <Filter>src\PostProcess</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Shader.h">
@@ -196,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="src\Editor\SceneSettings.h">
       <Filter>src\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PostProcess\SSAO.h">
+      <Filter>src\PostProcess</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

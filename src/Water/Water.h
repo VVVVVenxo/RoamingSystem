@@ -35,6 +35,12 @@ public:
     float m_reflectivity;
     float m_tiling;
     glm::vec3 m_waterColor;
+    
+    // Foam parameters
+    bool m_foamEnabled;
+    float m_foamDepth;
+    float m_foamIntensity;
+    glm::vec3 m_foamColor;
 
 private:
     Shader m_shader;

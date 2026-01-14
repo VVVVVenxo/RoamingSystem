@@ -12,6 +12,7 @@
 #include "Water/Water.h"
 #include "Water/WaterFramebuffers.h"
 #include "Editor/SceneSettings.h"
+#include "PostProcess/SSAO.h"
 
 class RoamingApp : public Application
 {
@@ -48,6 +49,9 @@ private:
     Texture m_grassTexture;
     Texture m_rockTexture;
     Texture m_snowTexture;
+    Texture m_grassNormalMap;
+    Texture m_rockNormalMap;
+    Texture m_snowNormalMap;
     
     // Terrain parameters
     float m_terrainSize;
@@ -58,6 +62,8 @@ private:
     float m_rockMaxHeight;
     float m_slopeThreshold;
     bool m_useTerrainTextures;
+    bool m_useNormalMaps;
+    float m_normalMapStrength;
     bool m_wireframeMode;
     
     // Water
@@ -76,6 +82,15 @@ private:
     // Fog
     bool m_enableFog;
     float m_fogDensity;
+    
+    // SSAO
+    SSAO m_ssao;
+    Shader m_gbufferShader;
+    bool m_enableSSAO;
+    float m_ssaoRadius;
+    float m_ssaoBias;
+    float m_ssaoIntensity;
+    int m_ssaoKernelSize;
     
     // Performance stats
     int m_drawCalls;

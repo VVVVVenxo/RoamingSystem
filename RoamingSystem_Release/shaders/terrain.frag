@@ -6,12 +6,21 @@ in vec3 vWorldPos;
 in vec3 vNormal;
 in vec2 vTexCoord;
 in float vHeight;
+in mat3 vTBN;
 
-// Textures
+// Color textures
 uniform sampler2D uGrassTexture;
 uniform sampler2D uRockTexture;
 uniform sampler2D uSnowTexture;
+
+// Normal maps
+uniform sampler2D uGrassNormalMap;
+uniform sampler2D uRockNormalMap;
+uniform sampler2D uSnowNormalMap;
+
 uniform bool uUseTextures;
+uniform bool uUseNormalMaps;
+uniform float uNormalMapStrength;
 
 // Parameters
 uniform float uMaxHeight;
@@ -34,11 +43,11 @@ uniform bool uFogEnabled;
 
 void main()
 {
-    vec3 normal = normalize(vNormal);
+    vec3 geometryNormal = normalize(vNormal);
     vec2 tiledUV = vTexCoord * uTextureTiling;
     
-    // Calculate slope (0 = flat, 1 = vertical)
-    float slope = 1.0 - dot(normal, vec3(0.0, 1.0, 0.0));
+    // Calculate slope using geometry normal (0 = flat, 1 = vertical)
+    float slope = 1.0 - dot(geometryNormal, vec3(0.0, 1.0, 0.0));
     
     // Normalized height
     float normalizedHeight = vHeight / uMaxHeight;
@@ -66,16 +75,35 @@ void main()
     snowWeight /= totalWeight;
     
     vec3 albedo;
+    vec3 normal = geometryNormal;
     
     if (uUseTextures)
     {
-        // Sample textures
+        // Sample color textures
         vec3 grassColor = texture(uGrassTexture, tiledUV).rgb;
         vec3 rockColor = texture(uRockTexture, tiledUV).rgb;
         vec3 snowColor = texture(uSnowTexture, tiledUV).rgb;
         
         // Blend textures
         albedo = grassColor * grassWeight + rockColor * rockWeight + snowColor * snowWeight;
+        
+        // Sample and blend normal maps
+        if (uUseNormalMaps)
+        {
+            vec3 grassNormal = texture(uGrassNormalMap, tiledUV).rgb * 2.0 - 1.0;
+            vec3 rockNormal = texture(uRockNormalMap, tiledUV).rgb * 2.0 - 1.0;
+            vec3 snowNormal = texture(uSnowNormalMap, tiledUV).rgb * 2.0 - 1.0;
+            
+            // Blend normals in tangent space
+            vec3 tangentNormal = grassNormal * grassWeight + rockNormal * rockWeight + snowNormal * snowWeight;
+            
+            // Apply normal map strength
+            tangentNormal.xy *= uNormalMapStrength;
+            tangentNormal = normalize(tangentNormal);
+            
+            // Transform to world space using TBN matrix
+            normal = normalize(vTBN * tangentNormal);
+        }
     }
     else
     {

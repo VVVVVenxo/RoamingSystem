@@ -14,12 +14,13 @@
   Skybox.cpp
   Lighting.cpp
   Application.cpp
+  SSAO.cpp
   RoamingApp.cpp
   HeightmapLoader.cpp
   Frustum.cpp
   TerrainChunk.cpp
-  ChunkedTerrain.cpp
   正在编译...
+  ChunkedTerrain.cpp
   Terrain.cpp
   Water.cpp
   WaterFramebuffers.cpp
@@ -28,7 +29,7 @@
 LINK : warning LNK4098: 默认库“MSVCRTD”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
   正在生成代码
   Previous IPDB not found, fall back to full compilation.
-  All 2932 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 3029 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   已完成代码的生成
 glfw3.lib(input.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(input.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
 glfw3.lib(window.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(window.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样

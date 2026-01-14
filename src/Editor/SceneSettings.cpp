@@ -45,6 +45,13 @@ bool SceneSettingsManager::save(const SceneSettings& settings, const std::string
     file << "enableFog=" << (settings.enableFog ? 1 : 0) << std::endl;
     file << "fogDensity=" << settings.fogDensity << std::endl;
 
+    file << std::endl << "[SSAO]" << std::endl;
+    file << "enableSSAO=" << (settings.enableSSAO ? 1 : 0) << std::endl;
+    file << "ssaoRadius=" << settings.ssaoRadius << std::endl;
+    file << "ssaoBias=" << settings.ssaoBias << std::endl;
+    file << "ssaoIntensity=" << settings.ssaoIntensity << std::endl;
+    file << "ssaoKernelSize=" << settings.ssaoKernelSize << std::endl;
+
     file << std::endl << "[Camera]" << std::endl;
     file << "cameraPosX=" << settings.cameraPos.x << std::endl;
     file << "cameraPosY=" << settings.cameraPos.y << std::endl;
@@ -120,6 +127,13 @@ bool SceneSettingsManager::load(SceneSettings& settings, const std::string& file
         // Fog
         else if (key == "enableFog") settings.enableFog = (std::stoi(value) != 0);
         else if (key == "fogDensity") settings.fogDensity = std::stof(value);
+        
+        // SSAO
+        else if (key == "enableSSAO") settings.enableSSAO = (std::stoi(value) != 0);
+        else if (key == "ssaoRadius") settings.ssaoRadius = std::stof(value);
+        else if (key == "ssaoBias") settings.ssaoBias = std::stof(value);
+        else if (key == "ssaoIntensity") settings.ssaoIntensity = std::stof(value);
+        else if (key == "ssaoKernelSize") settings.ssaoKernelSize = std::stoi(value);
         
         // Camera
         else if (key == "cameraPosX") settings.cameraPos.x = std::stof(value);

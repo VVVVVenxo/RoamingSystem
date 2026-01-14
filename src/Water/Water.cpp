@@ -15,6 +15,10 @@ Water::Water()
     , m_reflectivity(0.6f)
     , m_tiling(4.0f)
     , m_waterColor(0.0f, 0.3f, 0.5f)
+    , m_foamEnabled(true)
+    , m_foamDepth(2.0f)
+    , m_foamIntensity(0.8f)
+    , m_foamColor(1.0f, 1.0f, 1.0f)
 {
 }
 
@@ -140,6 +144,12 @@ void Water::render(const glm::mat4& view, const glm::mat4& projection,
     m_shader.setFloat("uTiling", m_tiling);
     m_shader.setVec3("uWaterColor", m_waterColor);
     m_shader.setBool("uUseTextures", m_texturesLoaded);
+    
+    // Foam parameters
+    m_shader.setBool("uFoamEnabled", m_foamEnabled);
+    m_shader.setFloat("uFoamDepth", m_foamDepth);
+    m_shader.setFloat("uFoamIntensity", m_foamIntensity);
+    m_shader.setVec3("uFoamColor", m_foamColor);
 
     // Bind reflection texture
     glActiveTexture(GL_TEXTURE0);

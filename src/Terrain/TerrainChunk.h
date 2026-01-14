@@ -45,6 +45,7 @@ private:
     
     glm::vec3 calculateNormal(const HeightmapLoader& heightmap,
                               int x, int z, float cellSize, float maxHeight);
+    glm::vec3 calculateTangent(const glm::vec3& normal);
 };
 
 #endif

@@ -125,6 +125,8 @@ void TerrainChunk::generateLODMesh(const HeightmapLoader& heightmap,
             float u = static_cast<float>(x) / static_cast<float>(hmWidth - 1);
             float v = static_cast<float>(z) / static_cast<float>(hmHeight - 1);
             
+            glm::vec3 tangent = calculateTangent(normal);
+            
             vertices.push_back(worldX);
             vertices.push_back(worldY);
             vertices.push_back(worldZ);
@@ -133,6 +135,9 @@ void TerrainChunk::generateLODMesh(const HeightmapLoader& heightmap,
             vertices.push_back(normal.z);
             vertices.push_back(u);
             vertices.push_back(v);
+            vertices.push_back(tangent.x);
+            vertices.push_back(tangent.y);
+            vertices.push_back(tangent.z);
             
             vertexCountX++;
         }
@@ -162,7 +167,7 @@ void TerrainChunk::generateLODMesh(const HeightmapLoader& heightmap,
     if (!vertices.empty() && !indices.empty())
     {
         m_lodMeshes[lodLevel].setVertices(vertices.data(), vertices.size() * sizeof(float),
-                                          VertexLayout::positionNormalTexture());
+                                          VertexLayout::positionNormalTextureTangent());
         m_lodMeshes[lodLevel].setIndices(indices.data(), indices.size());
         m_triangleCounts[lodLevel] = static_cast<int>(indices.size() / 3);
     }
@@ -181,6 +186,25 @@ glm::vec3 TerrainChunk::calculateNormal(const HeightmapLoader& heightmap,
     
     glm::vec3 normal(hL - hR, 2.0f * cellSize, hD - hU);
     return glm::normalize(normal);
+}
+
+glm::vec3 TerrainChunk::calculateTangent(const glm::vec3& normal)
+{
+    // For terrain, tangent is along +X axis (texture U direction)
+    // Then orthogonalize with respect to normal using Gram-Schmidt
+    glm::vec3 tangent(1.0f, 0.0f, 0.0f);
+    
+    // Gram-Schmidt orthogonalization
+    tangent = tangent - glm::dot(tangent, normal) * normal;
+    
+    // Handle edge case where normal is parallel to X axis
+    if (glm::length(tangent) < 0.001f)
+    {
+        tangent = glm::vec3(0.0f, 0.0f, 1.0f);
+        tangent = tangent - glm::dot(tangent, normal) * normal;
+    }
+    
+    return glm::normalize(tangent);
 }
 
 void TerrainChunk::render(int lodLevel)

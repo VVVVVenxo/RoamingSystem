@@ -29,6 +29,12 @@ uniform vec3 uFogColor;
 uniform float uFogDensity;
 uniform bool uFogEnabled;
 
+// Foam parameters
+uniform float uFoamDepth;
+uniform float uFoamIntensity;
+uniform vec3 uFoamColor;
+uniform bool uFoamEnabled;
+
 const float waveSpeed = 0.03;
 const float near = 0.1;
 const float far = 1000.0;
@@ -103,6 +109,31 @@ void main()
     
     // Add specular highlights
     FragColor.rgb += specularHighlights;
+    
+    // Calculate water depth for foam
+    if (uFoamEnabled)
+    {
+        float depth = texture(uDepthMap, refractTexCoord).r;
+        float floorDistance = 2.0 * near * far / (far + near - (2.0 * depth - 1.0) * (far - near));
+        float waterDistance = 2.0 * near * far / (far + near - (2.0 * gl_FragCoord.z - 1.0) * (far - near));
+        float waterDepth = floorDistance - waterDistance;
+        
+        // Foam intensity based on depth
+        float foamFactor = 1.0 - clamp(waterDepth / uFoamDepth, 0.0, 1.0);
+        
+        // Procedural foam noise (animated)
+        float moveFactor = uTime * waveSpeed;
+        float noise1 = sin(vTexCoord.x * 30.0 + moveFactor * 50.0) * 0.5 + 0.5;
+        float noise2 = sin(vTexCoord.y * 25.0 - moveFactor * 40.0) * 0.5 + 0.5;
+        float noise3 = sin((vTexCoord.x + vTexCoord.y) * 20.0 + moveFactor * 30.0) * 0.5 + 0.5;
+        float foamNoise = (noise1 * noise2 + noise3) * 0.5;
+        
+        // Edge softening with noise threshold
+        float foam = foamFactor * smoothstep(0.3, 0.7, foamNoise * foamFactor + foamFactor * 0.5);
+        
+        // Mix foam color
+        FragColor.rgb = mix(FragColor.rgb, uFoamColor, foam * uFoamIntensity);
+    }
     
     // Apply fog
     if (uFogEnabled)
