@@ -80,7 +80,7 @@ void RoamingApp::onInit()
     m_gbufferShader.load("shaders/gbuffer.vert", "shaders/gbuffer.frag");
 
     // Load cube shader and mesh for reference
-    m_cubeShader.load("shaders/test.vert", "shaders/test.frag");
+    m_cubeShader.load("shaders/basic.vert", "shaders/basic.frag");
     
     // Simple cube vertices
     float cubeVertices[] = {
