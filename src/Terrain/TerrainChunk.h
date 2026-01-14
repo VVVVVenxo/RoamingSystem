@@ -1,3 +1,9 @@
+/**
+ * @file TerrainChunk.h
+ * @brief Terrain chunk class with LOD support
+ * @author LuNingfang
+ */
+
 #ifndef TERRAIN_CHUNK_H
 #define TERRAIN_CHUNK_H
 

@@ -1,3 +1,9 @@
+/**
+ * @file Water.h
+ * @brief Water surface rendering class
+ * @author LuNingfang
+ */
+
 #ifndef WATER_H
 #define WATER_H
 
@@ -11,10 +17,8 @@ public:
     Water();
     ~Water();
 
-    // Initialize water plane
     void init(float size, float height);
 
-    // Render water surface
     void render(const glm::mat4& view, const glm::mat4& projection,
                 const glm::vec3& cameraPos, const glm::vec3& lightDir, 
                 const glm::vec3& lightColor, float lightIntensity, float time,
@@ -22,7 +26,6 @@ public:
                 unsigned int depthTex,
                 const glm::vec3& fogColor, float fogDensity, bool fogEnabled);
 
-    // Accessors
     float getHeight() const { return m_height; }
     void setHeight(float height) { m_height = height; }
     float getSize() const { return m_size; }
@@ -36,7 +39,6 @@ public:
     float m_tiling;
     glm::vec3 m_waterColor;
     
-    // Foam parameters
     bool m_foamEnabled;
     float m_foamDepth;
     float m_foamIntensity;

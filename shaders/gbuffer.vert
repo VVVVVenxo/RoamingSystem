@@ -1,3 +1,9 @@
+/**
+ * @file gbuffer.vert
+ * @brief G-Buffer vertex shader (for SSAO)
+ * @author LuNingfang
+ */
+
 #version 450 core
 
 layout (location = 0) in vec3 aPos;

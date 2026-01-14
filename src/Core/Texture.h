@@ -1,3 +1,9 @@
+/**
+ * @file Texture.h
+ * @brief 2D texture management class
+ * @author LuNingfang
+ */
+
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
@@ -12,11 +18,9 @@ public:
     Texture(const std::string& path, bool flipVertically = true);
     ~Texture();
 
-    // Prevent copying
     Texture(const Texture&) = delete;
     Texture& operator=(const Texture&) = delete;
 
-    // Allow moving
     Texture(Texture&& other) noexcept;
     Texture& operator=(Texture&& other) noexcept;
 

@@ -1,3 +1,9 @@
+/**
+ * @file Cubemap.h
+ * @brief Cubemap texture class (for skybox)
+ * @author LuNingfang
+ */
+
 #ifndef CUBEMAP_H
 #define CUBEMAP_H
 
@@ -11,18 +17,13 @@ public:
     Cubemap();
     ~Cubemap();
 
-    // Prevent copying
     Cubemap(const Cubemap&) = delete;
     Cubemap& operator=(const Cubemap&) = delete;
 
-    // Allow moving
     Cubemap(Cubemap&& other) noexcept;
     Cubemap& operator=(Cubemap&& other) noexcept;
 
-    // Load from 6 images (order: +X, -X, +Y, -Y, +Z, -Z)
     bool load(const std::vector<std::string>& faces);
-
-    // Load from directory (looks for right/left/top/bottom/front/back.jpg)
     bool loadFromDirectory(const std::string& directory, const std::string& extension = ".jpg");
 
     void bind(unsigned int unit = 0) const;

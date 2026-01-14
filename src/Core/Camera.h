@@ -1,3 +1,20 @@
+/**
+ * @file Camera.h
+ * @brief First-person camera class
+ * @author LuNingfang
+ * 
+ * Features:
+ * - Manages camera position, orientation, and up vector
+ * - Handles keyboard input for WASD movement
+ * - Handles mouse input for view rotation
+ * - Handles scroll input for zoom
+ * - Generates view matrix for rendering
+ * 
+ * Coordinate system:
+ * - Right-handed (OpenGL standard)
+ * - Y-axis points up, Z-axis points out of screen
+ */
+
 #ifndef CAMERA_H
 #define CAMERA_H
 
@@ -5,6 +22,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+/**
+ * @brief Camera movement direction
+ */
 enum Camera_Movement {
     FORWARD,
     BACKWARD,
@@ -12,12 +32,16 @@ enum Camera_Movement {
     RIGHT
 };
 
+// Default camera parameters
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
 const float SPEED = 2.5f;
 const float SENSITIVITY = 0.1f;
 const float ZOOM = 45.0f;
 
+/**
+ * @brief First-person camera class
+ */
 class Camera
 {
 public:
@@ -26,8 +50,10 @@ public:
     glm::vec3 Up;
     glm::vec3 Right;
     glm::vec3 WorldUp;
+    
     float Yaw;
     float Pitch;
+    
     float MovementSpeed;
     float MouseSensitivity;
     float Zoom;
@@ -100,6 +126,7 @@ public:
         front.y = sin(glm::radians(Pitch));
         front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
         Front = glm::normalize(front);
+        
         Right = glm::normalize(glm::cross(Front, WorldUp));
         Up = glm::normalize(glm::cross(Right, Front));
     }

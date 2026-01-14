@@ -1,3 +1,9 @@
+/**
+ * @file Terrain.h
+ * @brief Terrain system main interface
+ * @author LuNingfang
+ */
+
 #ifndef TERRAIN_H
 #define TERRAIN_H
 
@@ -18,21 +24,18 @@ public:
 
     float getHeightAt(float worldX, float worldZ) const;
 
-    // Accessors
     float getSize() const { return m_chunkedTerrain.getSize(); }
     float getMaxHeight() const { return m_chunkedTerrain.getMaxHeight(); }
     bool isGenerated() const { return m_chunkedTerrain.isGenerated(); }
     int getGridWidth() const { return m_chunkedTerrain.getGridWidth(); }
     int getGridHeight() const { return m_chunkedTerrain.getGridHeight(); }
     
-    // Statistics
     int getVertexCount() const { return m_chunkedTerrain.getTotalVertices(); }
     int getTriangleCount() const { return m_chunkedTerrain.getRenderedTriangles(); }
     int getTotalChunks() const { return m_chunkedTerrain.getTotalChunks(); }
     int getVisibleChunks() const { return m_chunkedTerrain.getVisibleChunks(); }
     int getCulledChunks() const { return m_chunkedTerrain.getCulledChunks(); }
     
-    // LOD/Culling settings (exposed for ImGui)
     ChunkedTerrain& getChunkedTerrain() { return m_chunkedTerrain; }
 
 private:

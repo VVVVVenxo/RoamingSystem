@@ -1,3 +1,9 @@
+/**
+ * @file gbuffer.frag
+ * @brief G-Buffer fragment shader - outputs position and normal
+ * @author LuNingfang
+ */
+
 #version 450 core
 
 layout (location = 0) out vec4 gPosition;

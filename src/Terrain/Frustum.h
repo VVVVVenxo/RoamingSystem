@@ -1,3 +1,9 @@
+/**
+ * @file Frustum.h
+ * @brief View frustum culling class
+ * @author LuNingfang
+ */
+
 #ifndef FRUSTUM_H
 #define FRUSTUM_H
 

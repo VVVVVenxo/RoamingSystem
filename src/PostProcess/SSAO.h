@@ -1,3 +1,9 @@
+/**
+ * @file SSAO.h
+ * @brief Screen Space Ambient Occlusion post-processing effect
+ * @author LuNingfang
+ */
+
 #ifndef SSAO_H
 #define SSAO_H
 
@@ -12,49 +18,74 @@ public:
     SSAO();
     ~SSAO();
 
+    /**
+     * @brief Initialize SSAO system
+     * @param width Screen width
+     * @param height Screen height
+     */
     void init(int width, int height);
+    
+    /**
+     * @brief Resize buffers (when window resizes)
+     */
     void resize(int width, int height);
     
-    // Render passes
+    /**
+     * @brief Bind G-Buffer for geometry pass
+     */
     void bindGBuffer();
+    
+    /**
+     * @brief Calculate SSAO occlusion factors
+     * @param projection Projection matrix
+     * @param view View matrix
+     */
     void renderSSAO(const glm::mat4& projection, const glm::mat4& view);
+    
+    /**
+     * @brief Blur SSAO to remove noise
+     */
     void renderBlur();
+    
+    /**
+     * @brief Unbind FBO and restore default framebuffer
+     */
     void unbind(int windowWidth, int windowHeight);
     
-    // Get final SSAO texture
+    // Texture getters
     unsigned int getSSAOTexture() const { return m_ssaoBlurTexture; }
     unsigned int getPositionTexture() const { return m_gPosition; }
     unsigned int getNormalTexture() const { return m_gNormal; }
     
     bool isInitialized() const { return m_initialized; }
     
-    // Public parameters
+    // Public parameters for ImGui
     bool m_enabled;
-    float m_radius;
-    float m_bias;
-    float m_intensity;
-    int m_kernelSize;
+    float m_radius;         // Sampling radius
+    float m_bias;           // Depth bias to avoid acne
+    float m_intensity;      // Occlusion intensity
+    int m_kernelSize;       // Number of samples
 
 private:
-    // G-Buffer
+    // G-Buffer (stores position and normal in view space)
     unsigned int m_gBufferFBO;
     unsigned int m_gPosition;
     unsigned int m_gNormal;
     unsigned int m_gDepth;
     
-    // SSAO
+    // SSAO calculation
     unsigned int m_ssaoFBO;
     unsigned int m_ssaoTexture;
     
-    // Blur
+    // SSAO blur
     unsigned int m_ssaoBlurFBO;
     unsigned int m_ssaoBlurTexture;
     
-    // Noise texture and kernel
+    // Random samples and noise
     unsigned int m_noiseTexture;
     std::vector<glm::vec3> m_ssaoKernel;
     
-    // Screen quad
+    // Full-screen quad
     unsigned int m_quadVAO;
     unsigned int m_quadVBO;
     

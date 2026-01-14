@@ -1,3 +1,9 @@
+/**
+ * @file water.vert
+ * @brief Water vertex shader
+ * @author LuNingfang
+ */
+
 #version 450 core
 
 layout (location = 0) in vec3 aPos;

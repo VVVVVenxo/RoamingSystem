@@ -1,3 +1,9 @@
+/**
+ * @file SceneSettings.cpp
+ * @brief Scene settings serialization implementation
+ * @author LuNingfang
+ */
+
 #include "SceneSettings.h"
 #include <fstream>
 #include <iostream>
@@ -84,13 +90,11 @@ bool SceneSettingsManager::load(SceneSettings& settings, const std::string& file
     std::string line;
     while (std::getline(file, line))
     {
-        // Skip empty lines and section headers
         if (line.empty() || line[0] == '[')
         {
             continue;
         }
 
-        // Parse key=value
         size_t eqPos = line.find('=');
         if (eqPos == std::string::npos)
         {
@@ -100,14 +104,14 @@ bool SceneSettingsManager::load(SceneSettings& settings, const std::string& file
         std::string key = line.substr(0, eqPos);
         std::string value = line.substr(eqPos + 1);
 
-        // Terrain
+        // Parse terrain settings
         if (key == "textureTiling") settings.textureTiling = std::stof(value);
         else if (key == "grassMaxHeight") settings.grassMaxHeight = std::stof(value);
         else if (key == "rockMaxHeight") settings.rockMaxHeight = std::stof(value);
         else if (key == "slopeThreshold") settings.slopeThreshold = std::stof(value);
         else if (key == "useTerrainTextures") settings.useTerrainTextures = (std::stoi(value) != 0);
         
-        // Water
+        // Parse water settings
         else if (key == "waterHeight") settings.waterHeight = std::stof(value);
         else if (key == "waveSpeed") settings.waveSpeed = std::stof(value);
         else if (key == "waveStrength") settings.waveStrength = std::stof(value);
@@ -119,23 +123,23 @@ bool SceneSettingsManager::load(SceneSettings& settings, const std::string& file
         else if (key == "waterColorB") settings.waterColor.b = std::stof(value);
         else if (key == "enableWater") settings.enableWater = (std::stoi(value) != 0);
         
-        // Lighting
+        // Parse lighting settings
         else if (key == "timeOfDay") settings.timeOfDay = std::stof(value);
         else if (key == "daySpeed") settings.daySpeed = std::stof(value);
         else if (key == "autoAdvance") settings.autoAdvance = (std::stoi(value) != 0);
         
-        // Fog
+        // Parse fog settings
         else if (key == "enableFog") settings.enableFog = (std::stoi(value) != 0);
         else if (key == "fogDensity") settings.fogDensity = std::stof(value);
         
-        // SSAO
+        // Parse SSAO settings
         else if (key == "enableSSAO") settings.enableSSAO = (std::stoi(value) != 0);
         else if (key == "ssaoRadius") settings.ssaoRadius = std::stof(value);
         else if (key == "ssaoBias") settings.ssaoBias = std::stof(value);
         else if (key == "ssaoIntensity") settings.ssaoIntensity = std::stof(value);
         else if (key == "ssaoKernelSize") settings.ssaoKernelSize = std::stoi(value);
         
-        // Camera
+        // Parse camera settings
         else if (key == "cameraPosX") settings.cameraPos.x = std::stof(value);
         else if (key == "cameraPosY") settings.cameraPos.y = std::stof(value);
         else if (key == "cameraPosZ") settings.cameraPos.z = std::stof(value);
@@ -146,7 +150,7 @@ bool SceneSettingsManager::load(SceneSettings& settings, const std::string& file
         else if (key == "groundWalkMode") settings.groundWalkMode = (std::stoi(value) != 0);
         else if (key == "playerHeight") settings.playerHeight = std::stof(value);
         
-        // Display
+        // Parse display settings
         else if (key == "wireframeMode") settings.wireframeMode = (std::stoi(value) != 0);
         else if (key == "showCube") settings.showCube = (std::stoi(value) != 0);
     }

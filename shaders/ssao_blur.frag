@@ -1,3 +1,9 @@
+/**
+ * @file ssao_blur.frag
+ * @brief SSAO blur shader (4x4 box blur)
+ * @author LuNingfang
+ */
+
 #version 450 core
 
 out float FragColor;

@@ -1,3 +1,9 @@
+/**
+ * @file ssao.frag
+ * @brief SSAO calculation shader
+ * @author LuNingfang
+ */
+
 #version 450 core
 
 out float FragColor;

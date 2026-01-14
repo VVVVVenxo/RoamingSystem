@@ -1,3 +1,9 @@
+/**
+ * @file skybox.frag
+ * @brief Skybox fragment shader
+ * @author LuNingfang
+ */
+
 #version 450 core
 
 out vec4 FragColor;

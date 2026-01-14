@@ -1,3 +1,9 @@
+/**
+ * @file Shader.cpp
+ * @brief Shader program implementation
+ * @author LuNingfang
+ */
+
 #include "Shader.h"
 #include <fstream>
 #include <sstream>
@@ -30,10 +36,8 @@ void Shader::release()
 
 bool Shader::load(const char* vertexPath, const char* fragmentPath)
 {
-    // Release previous shader if exists
     release();
 
-    // 1. Read vertex/fragment source code from file paths
     std::string vertexCode;
     std::string fragmentCode;
     std::ifstream vShaderFile;
@@ -63,30 +67,24 @@ bool Shader::load(const char* vertexPath, const char* fragmentPath)
     const char* vShaderCode = vertexCode.c_str();
     const char* fShaderCode = fragmentCode.c_str();
 
-    // 2. Compile shaders
     unsigned int vertex, fragment;
-    bool success = true;
 
-    // Vertex shader
     vertex = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex, 1, &vShaderCode, NULL);
     glCompileShader(vertex);
     checkCompileErrors(vertex, "VERTEX");
 
-    // Fragment shader
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment, 1, &fShaderCode, NULL);
     glCompileShader(fragment);
     checkCompileErrors(fragment, "FRAGMENT");
 
-    // Shader program linking
     ID = glCreateProgram();
     glAttachShader(ID, vertex);
     glAttachShader(ID, fragment);
     glLinkProgram(ID);
     checkCompileErrors(ID, "PROGRAM");
 
-    // Delete shaders as they're linked into the program now
     glDeleteShader(vertex);
     glDeleteShader(fragment);
 

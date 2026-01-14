@@ -1,8 +1,10 @@
-#include "Mesh.h"
+/**
+ * @file Mesh.cpp
+ * @brief Mesh implementation
+ * @author LuNingfang
+ */
 
-// ============================================
-// VertexLayout Implementation
-// ============================================
+#include "Mesh.h"
 
 size_t VertexLayout::getTypeSize(VertexAttribType type)
 {
@@ -33,57 +35,53 @@ void VertexLayout::add(unsigned int index, int size, VertexAttribType type, bool
 VertexLayout VertexLayout::positionOnly()
 {
     VertexLayout layout;
-    layout.add(0, 3, VertexAttribType::Float); // position
+    layout.add(0, 3, VertexAttribType::Float);
     return layout;
 }
 
 VertexLayout VertexLayout::positionColor()
 {
     VertexLayout layout;
-    layout.add(0, 3, VertexAttribType::Float); // position
-    layout.add(1, 3, VertexAttribType::Float); // color
+    layout.add(0, 3, VertexAttribType::Float);
+    layout.add(1, 3, VertexAttribType::Float);
     return layout;
 }
 
 VertexLayout VertexLayout::positionTexture()
 {
     VertexLayout layout;
-    layout.add(0, 3, VertexAttribType::Float); // position
-    layout.add(1, 2, VertexAttribType::Float); // texcoord
+    layout.add(0, 3, VertexAttribType::Float);
+    layout.add(1, 2, VertexAttribType::Float);
     return layout;
 }
 
 VertexLayout VertexLayout::positionColorTexture()
 {
     VertexLayout layout;
-    layout.add(0, 3, VertexAttribType::Float); // position
-    layout.add(1, 3, VertexAttribType::Float); // color
-    layout.add(2, 2, VertexAttribType::Float); // texcoord
+    layout.add(0, 3, VertexAttribType::Float);
+    layout.add(1, 3, VertexAttribType::Float);
+    layout.add(2, 2, VertexAttribType::Float);
     return layout;
 }
 
 VertexLayout VertexLayout::positionNormalTexture()
 {
     VertexLayout layout;
-    layout.add(0, 3, VertexAttribType::Float); // position
-    layout.add(1, 3, VertexAttribType::Float); // normal
-    layout.add(2, 2, VertexAttribType::Float); // texcoord
+    layout.add(0, 3, VertexAttribType::Float);
+    layout.add(1, 3, VertexAttribType::Float);
+    layout.add(2, 2, VertexAttribType::Float);
     return layout;
 }
 
 VertexLayout VertexLayout::positionNormalTextureTangent()
 {
     VertexLayout layout;
-    layout.add(0, 3, VertexAttribType::Float); // position
-    layout.add(1, 3, VertexAttribType::Float); // normal
-    layout.add(2, 2, VertexAttribType::Float); // texcoord
-    layout.add(3, 3, VertexAttribType::Float); // tangent
+    layout.add(0, 3, VertexAttribType::Float);
+    layout.add(1, 3, VertexAttribType::Float);
+    layout.add(2, 2, VertexAttribType::Float);
+    layout.add(3, 3, VertexAttribType::Float);
     return layout;
 }
-
-// ============================================
-// Mesh Implementation
-// ============================================
 
 Mesh::Mesh()
     : m_vao(0)
@@ -136,21 +134,16 @@ Mesh& Mesh::operator=(Mesh&& other) noexcept
 
 void Mesh::setVertices(const void* data, size_t size, const VertexLayout& layout)
 {
-    // Release previous resources
     release();
 
-    // Generate VAO and VBO
     glGenVertexArrays(1, &m_vao);
     glGenBuffers(1, &m_vbo);
 
-    // Bind VAO
     glBindVertexArray(m_vao);
 
-    // Upload vertex data to VBO
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 
-    // Configure vertex attributes
     for (const auto& attrib : layout.getAttribs())
     {
         GLenum glType = GL_FLOAT;
@@ -174,13 +167,11 @@ void Mesh::setVertices(const void* data, size_t size, const VertexLayout& layout
         glEnableVertexAttribArray(attrib.index);
     }
 
-    // Calculate vertex count
     if (layout.getStride() > 0)
     {
         m_vertexCount = static_cast<unsigned int>(size / layout.getStride());
     }
 
-    // Unbind
     glBindVertexArray(0);
 }
 
@@ -193,13 +184,11 @@ void Mesh::setIndices(const unsigned int* data, size_t count)
 
     glBindVertexArray(m_vao);
 
-    // Generate EBO if not exists
     if (m_ebo == 0)
     {
         glGenBuffers(1, &m_ebo);
     }
 
-    // Upload index data
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_STATIC_DRAW);
 

@@ -1,3 +1,9 @@
+/**
+ * @file basic.vert
+ * @brief Basic object vertex shader
+ * @author LuNingfang
+ */
+
 #version 450 core
 
 layout (location = 0) in vec3 aPos;

@@ -1,3 +1,9 @@
+/**
+ * @file ChunkedTerrain.h
+ * @brief Chunked terrain manager with LOD and frustum culling
+ * @author LuNingfang
+ */
+
 #ifndef CHUNKED_TERRAIN_H
 #define CHUNKED_TERRAIN_H
 
@@ -21,21 +27,18 @@ public:
     
     float getHeightAt(float worldX, float worldZ) const;
     
-    // Accessors
     float getSize() const { return m_size; }
     float getMaxHeight() const { return m_maxHeight; }
     bool isGenerated() const { return m_generated; }
     int getGridWidth() const { return m_heightmap.getWidth(); }
     int getGridHeight() const { return m_heightmap.getGridHeight(); }
     
-    // Statistics
     int getTotalChunks() const { return static_cast<int>(m_chunks.size()); }
     int getVisibleChunks() const { return m_visibleChunks; }
     int getCulledChunks() const { return getTotalChunks() - m_visibleChunks; }
     int getRenderedTriangles() const { return m_renderedTriangles; }
     int getTotalVertices() const { return m_totalVertices; }
     
-    // LOD settings
     float m_lodDistances[4] = { 100.0f, 200.0f, 400.0f, 800.0f };
     bool m_enableFrustumCulling = true;
     bool m_enableLOD = true;
@@ -51,7 +54,6 @@ private:
     int m_chunksPerRow;
     bool m_generated;
     
-    // Frame statistics
     int m_visibleChunks;
     int m_renderedTriangles;
     int m_totalVertices;

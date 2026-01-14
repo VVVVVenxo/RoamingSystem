@@ -1,3 +1,9 @@
+/**
+ * @file Skybox.h
+ * @brief Skybox rendering class
+ * @author LuNingfang
+ */
+
 #ifndef SKYBOX_H
 #define SKYBOX_H
 
@@ -12,13 +18,24 @@ public:
     Skybox();
     ~Skybox();
 
-    // Prevent copying
     Skybox(const Skybox&) = delete;
     Skybox& operator=(const Skybox&) = delete;
 
-    // Load skybox from directory containing 6 face images
+    /**
+     * @brief Load skybox cubemap from directory
+     * @param directory Directory containing 6 face images
+     * @param extension File extension (e.g., ".jpg", ".png")
+     * @return True if loaded successfully
+     */
     bool load(const std::string& directory, const std::string& extension = ".jpg");
 
+    /**
+     * @brief Render skybox
+     * @param view View matrix (translation removed)
+     * @param projection Projection matrix
+     * @param skyColor Dynamic sky color (from day/night cycle)
+     * @param blendFactor How much to blend cubemap with dynamic color
+     */
     void render(const glm::mat4& view, const glm::mat4& projection,
                 const glm::vec3& skyColor, float blendFactor);
 

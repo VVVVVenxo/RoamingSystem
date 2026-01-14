@@ -28,28 +28,28 @@
   main.cpp
 LINK : warning LNK4098: 默认库“MSVCRTD”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
   正在生成代码
-  Previous IPDB not found, fall back to full compilation.
-  All 3029 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Previous IPDB was built with incompatible compiler, fall back to full compilation.
+  All 3060 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   已完成代码的生成
-glfw3.lib(input.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(input.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(window.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(window.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(monitor.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(monitor.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(init.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(init.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(win32_window.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(win32_window.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(context.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(context.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(win32_time.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(win32_time.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(win32_thread.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(win32_thread.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(platform.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(platform.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(vulkan.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(vulkan.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(win32_init.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(win32_init.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(win32_monitor.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(win32_monitor.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(wgl_context.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(wgl_context.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(egl_context.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(egl_context.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(osmesa_context.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(osmesa_context.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(null_init.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(null_init.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(win32_module.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(win32_module.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(win32_joystick.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(win32_joystick.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(null_monitor.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(null_monitor.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(null_window.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(null_window.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-glfw3.lib(null_joystick.obj) : warning LNK4099: 未找到 PDB“”(使用“glfw3.lib(null_joystick.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(input.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(input.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(window.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(window.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(monitor.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(monitor.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(init.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(init.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(win32_window.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(win32_window.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(context.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(context.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(win32_time.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(win32_time.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(win32_thread.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(win32_thread.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(platform.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(platform.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(vulkan.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(vulkan.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(win32_init.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(win32_init.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(win32_monitor.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(win32_monitor.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(wgl_context.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(wgl_context.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(egl_context.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(egl_context.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(osmesa_context.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(osmesa_context.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(null_init.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(null_init.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(win32_module.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(win32_module.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(win32_joystick.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(win32_joystick.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(null_monitor.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(null_monitor.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(null_window.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(null_window.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+glfw3.lib(null_joystick.obj) : warning LNK4099: 未找到 PDB“glfw3.pdb”(使用“glfw3.lib(null_joystick.obj)”或在“E:\RoamingSystem\RoamingSystem\x64\Release\glfw3.pdb”中寻找)；正在链接对象，如同没有调试信息一样
   RoamingSystem.vcxproj -> E:\RoamingSystem\RoamingSystem\x64\Release\RoamingSystem.exe

@@ -1,10 +1,19 @@
+/**
+ * @file SceneSettings.h
+ * @brief Scene settings save/load system
+ * @author LuNingfang
+ */
+
 #ifndef SCENE_SETTINGS_H
 #define SCENE_SETTINGS_H
 
 #include <glm/glm.hpp>
 #include <string>
 
-// Scene settings structure
+/**
+ * @brief Scene settings structure
+ * Contains all configurable scene parameters
+ */
 struct SceneSettings
 {
     // Terrain
@@ -24,7 +33,7 @@ struct SceneSettings
     glm::vec3 waterColor = glm::vec3(0.0f, 0.3f, 0.5f);
     bool enableWater = true;
     
-    // Lighting / Day-Night Cycle
+    // Lighting
     float timeOfDay = 12.0f;
     float daySpeed = 0.1f;
     bool autoAdvance = false;
@@ -54,17 +63,26 @@ struct SceneSettings
     bool showCube = false;
 };
 
-// Scene settings manager
+/**
+ * @brief Scene settings manager
+ * Handles serialization to/from INI format
+ */
 class SceneSettingsManager
 {
 public:
-    // Save settings to file
+    /**
+     * @brief Save settings to INI file
+     */
     static bool save(const SceneSettings& settings, const std::string& filepath);
     
-    // Load settings from file
+    /**
+     * @brief Load settings from INI file
+     */
     static bool load(SceneSettings& settings, const std::string& filepath);
     
-    // Get default settings file path
+    /**
+     * @brief Get default settings file path
+     */
     static std::string getDefaultPath();
 };
 

@@ -1,3 +1,9 @@
+/**
+ * @file Application.h
+ * @brief Application framework base class
+ * @author LuNingfang
+ */
+
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
@@ -12,24 +18,19 @@ public:
     Application(int width, int height, const char* title);
     virtual ~Application();
 
-    // Prevent copying
     Application(const Application&) = delete;
     Application& operator=(const Application&) = delete;
 
-    // Main entry point
     int run();
 
-    // Lifecycle virtual functions (override in derived classes)
+    // Lifecycle hooks (override in derived classes)
     virtual void onInit() {}
     virtual void onUpdate(float deltaTime) { (void)deltaTime; }
     virtual void onRender() {}
     virtual void onImGui() {}
     virtual void onShutdown() {}
 
-    // Called when window is resized
     virtual void onResize(int width, int height) { (void)width; (void)height; }
-
-    // Called when mouse scrolls
     virtual void onScroll(float yoffset) { (void)yoffset; }
 
     // Input queries
@@ -64,7 +65,6 @@ protected:
     bool m_cursorEnabled;
     glm::vec4 m_clearColor;
 
-    // Mouse state
     glm::vec2 m_mousePos;
     glm::vec2 m_lastMousePos;
     glm::vec2 m_mouseDelta;
@@ -77,7 +77,6 @@ private:
     void shutdownImGui();
     void updateMouseState();
 
-    // GLFW callbacks
     static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
     static void cursorPosCallback(GLFWwindow* window, double xpos, double ypos);
     static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);

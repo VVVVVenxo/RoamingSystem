@@ -1,3 +1,9 @@
+/**
+ * @file RoamingApp.h
+ * @brief Main application class for terrain roaming system
+ * @author LuNingfang
+ */
+
 #ifndef ROAMING_APP_H
 #define ROAMING_APP_H
 
@@ -37,13 +43,9 @@ private:
 
     Camera m_camera;
     
-    // Skybox
     Skybox m_skybox;
-    
-    // Lighting
     Lighting m_lighting;
     
-    // Terrain
     Terrain m_terrain;
     Shader m_terrainShader;
     Texture m_grassTexture;
@@ -53,7 +55,6 @@ private:
     Texture m_rockNormalMap;
     Texture m_snowNormalMap;
     
-    // Terrain parameters
     float m_terrainSize;
     float m_terrainMaxHeight;
     float m_textureTiling;
@@ -66,24 +67,19 @@ private:
     float m_normalMapStrength;
     bool m_wireframeMode;
     
-    // Water
     Water m_water;
     WaterFramebuffers m_waterFBOs;
     float m_waterHeight;
     bool m_enableWater;
     
-    // Time for animations
     float m_time;
     
-    // Camera modes
     bool m_groundWalkMode;
     float m_playerHeight;
     
-    // Fog
     bool m_enableFog;
     float m_fogDensity;
     
-    // SSAO
     SSAO m_ssao;
     Shader m_gbufferShader;
     bool m_enableSSAO;
@@ -92,10 +88,8 @@ private:
     float m_ssaoIntensity;
     int m_ssaoKernelSize;
     
-    // Performance stats
     int m_drawCalls;
     
-    // Legacy cube (for reference)
     Shader m_cubeShader;
     Texture m_cubeTexture;
     Mesh m_cubeMesh;

@@ -1,10 +1,9 @@
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\vc143.pdb
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\glad.obj
-e:\roamingsystem\roamingsystem\roamingsystem\x64\release\chunkedterrain.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\terrainchunk.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\frustum.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\heightmaploader.obj
-e:\roamingsystem\roamingsystem\roamingsystem\x64\release\roamingapp.obj
+e:\roamingsystem\roamingsystem\roamingsystem\x64\release\ssao.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\application.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\lighting.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\skybox.obj
@@ -20,14 +19,10 @@ e:\roamingsystem\roamingsystem\roamingsystem\x64\release\imgui_impl_glfw.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\imgui_draw.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\imgui_demo.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\imgui.obj
-e:\roamingsystem\roamingsystem\roamingsystem\x64\release\main.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\scenesettings.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\waterframebuffers.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\water.obj
-e:\roamingsystem\roamingsystem\roamingsystem\x64\release\terrain.obj
+e:\roamingsystem\roamingsystem\roamingsystem\x64\release\chunkedterrain.obj
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\roamingsystem.tlog\cl.command.1.tlog
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\roamingsystem.tlog\cl.read.1.tlog
 e:\roamingsystem\roamingsystem\roamingsystem\x64\release\roamingsystem.tlog\cl.write.1.tlog
-e:\roamingsystem\roamingsystem\roamingsystem\x64\release\roamingsystem.tlog\link.command.1.tlog
-e:\roamingsystem\roamingsystem\roamingsystem\x64\release\roamingsystem.tlog\link.read.1.tlog
-e:\roamingsystem\roamingsystem\roamingsystem\x64\release\roamingsystem.tlog\link.write.1.tlog

@@ -1,3 +1,9 @@
+/**
+ * @file Texture.cpp
+ * @brief 2D texture implementation
+ * @author LuNingfang
+ */
+
 #include "Texture.h"
 #include <stb_image.h>
 
@@ -56,13 +62,10 @@ Texture& Texture::operator=(Texture&& other) noexcept
 
 bool Texture::load(const std::string& path, bool flipVertically)
 {
-    // Release previous texture if any
     release();
 
-    // Set stb_image to flip vertically (OpenGL texture origin is bottom-left)
     stbi_set_flip_vertically_on_load(flipVertically);
 
-    // Load image data
     unsigned char* data = stbi_load(path.c_str(), &m_width, &m_height, &m_channels, 0);
     if (!data)
     {
@@ -70,7 +73,6 @@ bool Texture::load(const std::string& path, bool flipVertically)
         return false;
     }
 
-    // Determine image format
     GLenum format = GL_RGB;
     GLenum internalFormat = GL_RGB;
     if (m_channels == 1)
@@ -89,21 +91,17 @@ bool Texture::load(const std::string& path, bool flipVertically)
         internalFormat = GL_RGBA;
     }
 
-    // Generate OpenGL texture object
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
 
-    // Set texture parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    // Upload texture data to GPU
     glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_width, m_height, 0, format, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
 
-    // Free CPU-side image data
     stbi_image_free(data);
 
     m_loaded = true;

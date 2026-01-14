@@ -1,3 +1,9 @@
+/**
+ * @file Cubemap.cpp
+ * @brief Cubemap implementation
+ * @author LuNingfang
+ */
+
 #include "Cubemap.h"
 #include <stb_image.h>
 #include <iostream>
@@ -57,7 +63,6 @@ bool Cubemap::load(const std::vector<std::string>& faces)
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureID);
 
-    // Don't flip cubemap textures vertically
     stbi_set_flip_vertically_on_load(false);
 
     int width, height, channels;
@@ -90,7 +95,6 @@ bool Cubemap::load(const std::vector<std::string>& faces)
         }
     }
 
-    // Set texture parameters
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -106,8 +110,6 @@ bool Cubemap::load(const std::vector<std::string>& faces)
 
 bool Cubemap::loadFromDirectory(const std::string& directory, const std::string& extension)
 {
-    // Order: +X, -X, +Y, -Y, +Z, -Z
-    // Try short naming first (px/nx)
     std::vector<std::string> facesShort = {
         directory + "/px" + extension,
         directory + "/nx" + extension,
@@ -122,7 +124,6 @@ bool Cubemap::loadFromDirectory(const std::string& directory, const std::string&
         return true;
     }
 
-    // Try OpenGL standard naming (posx/negx)
     std::vector<std::string> facesGL = {
         directory + "/posx" + extension,
         directory + "/negx" + extension,
@@ -137,7 +138,6 @@ bool Cubemap::loadFromDirectory(const std::string& directory, const std::string&
         return true;
     }
 
-    // Fallback to descriptive naming (right/left/top/bottom/front/back)
     std::vector<std::string> facesDesc = {
         directory + "/right" + extension,
         directory + "/left" + extension,

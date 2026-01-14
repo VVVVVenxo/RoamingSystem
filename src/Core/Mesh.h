@@ -1,3 +1,9 @@
+/**
+ * @file Mesh.h
+ * @brief Mesh management class (VAO/VBO/EBO wrapper)
+ * @author LuNingfang
+ */
+
 #ifndef MESH_H
 #define MESH_H
 
@@ -5,7 +11,6 @@
 #include <vector>
 #include <cstddef>
 
-// Vertex attribute data type
 enum class VertexAttribType
 {
     Float,
@@ -15,7 +20,6 @@ enum class VertexAttribType
     UnsignedByte
 };
 
-// Vertex attribute description
 struct VertexAttrib
 {
     unsigned int index;
@@ -25,7 +29,6 @@ struct VertexAttrib
     size_t offset;
 };
 
-// Vertex layout manager
 class VertexLayout
 {
 public:
@@ -35,7 +38,6 @@ public:
     const std::vector<VertexAttrib>& getAttribs() const { return m_attribs; }
     size_t getStride() const { return m_stride; }
 
-    // Predefined layouts
     static VertexLayout positionOnly();
     static VertexLayout positionColor();
     static VertexLayout positionTexture();
@@ -50,18 +52,15 @@ private:
     static size_t getTypeSize(VertexAttribType type);
 };
 
-// Mesh class - manages VAO/VBO/EBO
 class Mesh
 {
 public:
     Mesh();
     ~Mesh();
 
-    // Prevent copying
     Mesh(const Mesh&) = delete;
     Mesh& operator=(const Mesh&) = delete;
 
-    // Allow moving
     Mesh(Mesh&& other) noexcept;
     Mesh& operator=(Mesh&& other) noexcept;
 

@@ -1,3 +1,9 @@
+/**
+ * @file ssao.vert
+ * @brief SSAO vertex shader (fullscreen quad)
+ * @author LuNingfang
+ */
+
 #version 450 core
 
 layout (location = 0) in vec2 aPos;

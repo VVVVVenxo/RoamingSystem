@@ -1,3 +1,9 @@
+/**
+ * @file basic.frag
+ * @brief Basic object fragment shader
+ * @author LuNingfang
+ */
+
 #version 450 core
 
 out vec4 FragColor;
