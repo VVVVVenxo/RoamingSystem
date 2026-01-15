@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "e:/RoamingSystem/RoamingSystem/src/Water",
-      "program": "e:/RoamingSystem/RoamingSystem/src/Water/build/Debug/outDebug",
+      "cwd": "e:/RoamingSystem/RoamingSystem/src/Terrain",
+      "program": "e:/RoamingSystem/RoamingSystem/src/Terrain/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
