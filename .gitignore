@@ -1,1 +1,57 @@
+# Visual Studio 目录
 .vs/
+
+# 构建输出目录
+x64/
+Debug/
+Release/
+[Bb]uild/
+
+# Visual Studio 构建产物
+*.obj
+*.pdb
+*.exe
+*.dll
+*.lib
+*.exp
+*.ilk
+*.iobj
+*.ipdb
+*.pch
+*.res
+*.manifest
+
+# Visual Studio 中间文件
+*.tlog
+*.log
+*.lastbuildstate
+*.idb
+*.opensdf
+*.sdf
+*.suo
+*.user
+*.ncb
+*.aps
+
+# 项目特定的构建目录
+RoamingSystem/x64/
+RoamingSystem/Debug/
+RoamingSystem/Release/
+
+# IDE 配置
+.idea/
+.cursor/
+
+# 系统文件
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*.swp
+*~
+
+# ImGui 运行时配置
+imgui.ini
+
+# 发布目录（可选，如需版本控制可移除此行）
+# RoamingSystem_Release/
