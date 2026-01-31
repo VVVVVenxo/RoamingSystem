@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="third_party\imgui">
-      <UniqueIdentifier>{129314d9-f0be-4e15-a4ac-fb1699937cb8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="资源文件\shaders">
       <UniqueIdentifier>{6a2ddfc5-5459-40fd-a81b-2946b9681298}</UniqueIdentifier>
     </Filter>
@@ -102,61 +99,34 @@
     <ClCompile Include="src\Editor\SceneSettings.cpp">
       <Filter>src\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="third_party\imgui\imgui.cpp">
-      <Filter>third_party\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="third_party\imgui\imgui_demo.cpp">
-      <Filter>third_party\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="third_party\imgui\imgui_draw.cpp">
-      <Filter>third_party\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="third_party\imgui\imgui_impl_glfw.cpp">
-      <Filter>third_party\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="third_party\imgui\imgui_impl_opengl3.cpp">
-      <Filter>third_party\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="third_party\imgui\imgui_tables.cpp">
-      <Filter>third_party\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="third_party\imgui\imgui_widgets.cpp">
-      <Filter>third_party\imgui</Filter>
-    </ClCompile>
     <ClCompile Include="src\PostProcess\SSAO.cpp">
       <Filter>src\PostProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\imgui\imgui.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\imgui\imgui_demo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\imgui\imgui_draw.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\imgui\imgui_impl_glfw.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\imgui\imgui_impl_opengl3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\imgui\imgui_tables.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\imgui\imgui_widgets.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Shader.h">
       <Filter>src\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\imgui\imconfig.h">
-      <Filter>third_party\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\imgui\imgui.h">
-      <Filter>third_party\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\imgui\imgui_impl_glfw.h">
-      <Filter>third_party\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\imgui\imgui_impl_opengl3.h">
-      <Filter>third_party\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\imgui\imgui_impl_opengl3_loader.h">
-      <Filter>third_party\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\imgui\imgui_internal.h">
-      <Filter>third_party\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\imgui\imstb_rectpack.h">
-      <Filter>third_party\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\imgui\imstb_textedit.h">
-      <Filter>third_party\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\imgui\imstb_truetype.h">
-      <Filter>third_party\imgui</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\Camera.h">
       <Filter>src\Core</Filter>
@@ -209,14 +179,35 @@
     <ClInclude Include="src\PostProcess\SSAO.h">
       <Filter>src\PostProcess</Filter>
     </ClInclude>
+    <ClInclude Include="third_party\imgui\imconfig.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\imgui\imgui.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\imgui\imgui_impl_glfw.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\imgui\imgui_impl_opengl3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\imgui\imgui_internal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\imgui\imstb_rectpack.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\imgui\imstb_textedit.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\imgui\imstb_truetype.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\test.frag">
-      <Filter>资源文件\shaders</Filter>
-    </None>
-    <None Include="shaders\test.vert">
-      <Filter>资源文件\shaders</Filter>
-    </None>
     <None Include="shaders\terrain.vert">
       <Filter>资源文件\shaders</Filter>
     </None>
@@ -233,6 +224,12 @@
       <Filter>资源文件\shaders</Filter>
     </None>
     <None Include="shaders\water.frag">
+      <Filter>资源文件\shaders</Filter>
+    </None>
+    <None Include="shaders\basic.frag">
+      <Filter>资源文件\shaders</Filter>
+    </None>
+    <None Include="shaders\basic.vert">
       <Filter>资源文件\shaders</Filter>
     </None>
   </ItemGroup>
