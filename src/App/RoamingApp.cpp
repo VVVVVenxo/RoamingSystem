@@ -598,7 +598,7 @@ void RoamingApp::onImGui()
         ImGui::Text("Sun Intensity: %.2f", m_lighting.getSunIntensity());
         
         glm::vec3 sunColor = m_lighting.getSunColor();
-        ImGui::ColorEdit3("Sun Color", &sunColor.x, ImGuiColorEditFlags_NoInputs);
+        ImGui::ColorEdit3("Sun Color", &sunColor.x, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoPicker);
     }
     
     // Fog Section
@@ -611,7 +611,7 @@ void RoamingApp::onImGui()
             ImGui::SliderFloat("Fog Density", &m_fogDensity, 0.0f, 0.02f, "%.4f");
             
             glm::vec3 fogColor = m_lighting.getFogColor();
-            ImGui::ColorEdit3("Fog Color", &fogColor.x, ImGuiColorEditFlags_NoInputs);
+            ImGui::ColorEdit3("Fog Color", &fogColor.x, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoPicker);
             ImGui::Text("(Color follows time of day)");
         }
     }

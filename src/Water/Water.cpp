@@ -139,6 +139,7 @@ void Water::render(const glm::mat4& view, const glm::mat4& projection,
     // Water parameters
     m_shader.setFloat("uTime", time);
     m_shader.setFloat("uWaveStrength", m_waveStrength);
+    m_shader.setFloat("uWaveSpeed", m_waveSpeed);
     m_shader.setFloat("uShineDamper", m_shineDamper);
     m_shader.setFloat("uReflectivity", m_reflectivity);
     m_shader.setFloat("uTiling", m_tiling);

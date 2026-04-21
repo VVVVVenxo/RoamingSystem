@@ -35,7 +35,8 @@ uniform float uFoamIntensity;
 uniform vec3 uFoamColor;
 uniform bool uFoamEnabled;
 
-const float waveSpeed = 0.03;
+uniform float uWaveSpeed;
+uniform float uTiling;
 const float near = 0.1;
 const float far = 1000.0;
 
@@ -46,34 +47,30 @@ void main()
     vec2 reflectTexCoord = vec2(ndc.x, 1.0 - ndc.y);
     vec2 refractTexCoord = vec2(ndc.x, ndc.y);
     
+    vec2 tiledUV = vTexCoord * uTiling;
     vec2 totalDistortion = vec2(0.0);
     vec3 normal = vec3(0.0, 1.0, 0.0);
-    
+
     if (uUseTextures)
     {
-        // Animated texture coordinates for DuDv sampling
-        float moveFactor = uTime * waveSpeed;
-        vec2 distortedTexCoord = texture(uDudvMap, vec2(vTexCoord.x + moveFactor, vTexCoord.y)).rg * 0.1;
-        distortedTexCoord = vTexCoord + vec2(distortedTexCoord.x, distortedTexCoord.y + moveFactor);
-        
-        // Sample DuDv map for distortion
+        float moveFactor = uTime * uWaveSpeed;
+        vec2 distortedTexCoord = texture(uDudvMap, vec2(tiledUV.x + moveFactor, tiledUV.y)).rg * 0.1;
+        distortedTexCoord = tiledUV + vec2(distortedTexCoord.x, distortedTexCoord.y + moveFactor);
+
         totalDistortion = (texture(uDudvMap, distortedTexCoord).rg * 2.0 - 1.0) * uWaveStrength;
-        
-        // Sample normal map
+
         vec4 normalMapColor = texture(uNormalMap, distortedTexCoord);
         normal = vec3(normalMapColor.r * 2.0 - 1.0, normalMapColor.b * 3.0, normalMapColor.g * 2.0 - 1.0);
         normal = normalize(normal);
     }
     else
     {
-        // Procedural distortion without textures
-        float wave1 = sin(vTexCoord.x * 20.0 + uTime * 2.0) * 0.5;
-        float wave2 = sin(vTexCoord.y * 15.0 + uTime * 1.5) * 0.5;
+        float wave1 = sin(tiledUV.x * 20.0 + uTime * 2.0) * 0.5;
+        float wave2 = sin(tiledUV.y * 15.0 + uTime * 1.5) * 0.5;
         totalDistortion = vec2(wave1, wave2) * uWaveStrength * 0.5;
-        
-        // Procedural normal
-        float nx = cos(vTexCoord.x * 20.0 + uTime * 2.0) * 0.3;
-        float nz = cos(vTexCoord.y * 15.0 + uTime * 1.5) * 0.3;
+
+        float nx = cos(tiledUV.x * 20.0 + uTime * 2.0) * 0.3;
+        float nz = cos(tiledUV.y * 15.0 + uTime * 1.5) * 0.3;
         normal = normalize(vec3(nx, 1.0, nz));
     }
     
@@ -122,10 +119,10 @@ void main()
         float foamFactor = 1.0 - clamp(waterDepth / uFoamDepth, 0.0, 1.0);
         
         // Procedural foam noise (animated)
-        float moveFactor = uTime * waveSpeed;
-        float noise1 = sin(vTexCoord.x * 30.0 + moveFactor * 50.0) * 0.5 + 0.5;
-        float noise2 = sin(vTexCoord.y * 25.0 - moveFactor * 40.0) * 0.5 + 0.5;
-        float noise3 = sin((vTexCoord.x + vTexCoord.y) * 20.0 + moveFactor * 30.0) * 0.5 + 0.5;
+        float moveFactor = uTime * uWaveSpeed;
+        float noise1 = sin(tiledUV.x * 30.0 + moveFactor * 50.0) * 0.5 + 0.5;
+        float noise2 = sin(tiledUV.y * 25.0 - moveFactor * 40.0) * 0.5 + 0.5;
+        float noise3 = sin((tiledUV.x + tiledUV.y) * 20.0 + moveFactor * 30.0) * 0.5 + 0.5;
         float foamNoise = (noise1 * noise2 + noise3) * 0.5;
         
         // Edge softening with noise threshold
